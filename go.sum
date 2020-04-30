@@ -2,6 +2,8 @@ github.com/PuerkitoBio/goquery v1.5.1 h1:PSPBGne8NIUWw+/7vFBV+kG2J/5MOjbzc7154Oa
 github.com/PuerkitoBio/goquery v1.5.1/go.mod h1:GsLWisAFVj4WgDibEWF4pvYnkVQBpKBKeU+7zCJoLcc=
 github.com/Tnze/CoolQ-Golang-SDK v1.2.0 h1:0vnuZCFRd3ufSnZd/6sveqmlamIMm3Bnr8M/7veIDLE=
 github.com/Tnze/CoolQ-Golang-SDK v1.2.0/go.mod h1:e0wTTiIAcKLmr4JHTUHOo0dLzctmhNE1m3HhNHHGQLA=
+github.com/Tnze/CoolQ-Golang-SDK v1.2.1 h1:tkpnSsquoc+9h5C9/4sgAeQx12G4tcfSnzZWcpZ+ukc=
+github.com/Tnze/CoolQ-Golang-SDK v1.2.1/go.mod h1:e0wTTiIAcKLmr4JHTUHOo0dLzctmhNE1m3HhNHHGQLA=
 github.com/andybalholm/cascadia v1.1.0 h1:BuuO6sSfQNFRu1LppgbD25Hr2vLYW25JvxHs5zzsLTo=
 github.com/andybalholm/cascadia v1.1.0/go.mod h1:GsXiBklL0woXo1j/WYWtSYYC4ouU9PqHO0sqidkEA4Y=
 github.com/buger/jsonparser v0.0.0-20200322175846-f7e751efca13 h1:+qUNY4VRkEH46bLUwxCyUU+iOGJMQBVibAaYzWiwWcg=

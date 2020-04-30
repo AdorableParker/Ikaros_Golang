@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"path/filepath"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/Tnze/CoolQ-Golang-SDK/cqp"
 	"github.com/yanyiwu/gojieba"
@@ -102,14 +104,14 @@ func onPrivateMsg(subType, msgID int32, fromQQ int64, msg string, font int32) in
 	// cqp.SendPrivateMsg(fromQQ, msg) //复读机
 	ok := parser(msgID, -1, fromQQ, msg)
 	if !ok {
-		tuling(msg, -1, fromQQ)
+		tuling(msg, -1, fromQQ, true)
 	}
 	return 0
 }
 
 func onGroupMsg(subType, msgID int32, fromGroup, fromQQ int64, fromAnonymous, msg string, font int32) int32 {
 	if atForMe(msg) {
-		tuling(strings.NewReplacer(atMe, "").Replace(msg), fromGroup, fromQQ)
+		tuling(strings.NewReplacer(atMe, "").Replace(msg), fromGroup, fromQQ, true)
 		return 0
 	}
 	ok := parser(msgID, fromGroup, fromQQ, msg)
@@ -118,6 +120,11 @@ func onGroupMsg(subType, msgID int32, fromGroup, fromQQ int64, fromAnonymous, ms
 			if fire(fromGroup, fromQQ) {
 				return 0
 			}
+		}
+		rand.Seed(time.Now().UnixNano())
+		if rand.Intn(10) <= 2 {
+			tuling(msg, fromGroup, fromQQ, false)
+			return 0
 		}
 		repeater(msg, fromGroup)
 	}
@@ -193,7 +200,7 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 		sendDynamic(msg[1:], fromGroup, fromQQ, 161775300)
 	case "伊卡洛斯":
 		words := strings.Join(msg[1:], " ") // 拼接字符串
-		tuling(words, fromGroup, fromQQ)
+		tuling(words, fromGroup, fromQQ, true)
 	default: // 只有群消息有效
 		if fromGroup == -1 {
 			return false

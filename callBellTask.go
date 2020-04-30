@@ -85,5 +85,5 @@ func getScript(h int) string {
 		return ""
 	}
 	script := strings.Split(string(fd), "\n")
-	return script[rand.Intn(len(script))]
+	return script[h] + "    ————" + fileName
 }

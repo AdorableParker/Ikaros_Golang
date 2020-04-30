@@ -76,8 +76,8 @@ func nameToTime(index string) []string {
 		return nil
 	}
 
-	db.Table("ship_map").Where("CurrentName GLOB ?", fmt.Sprintf("*%s*", index)).Find(&shipInfos1)
-	db.Table("ship_map").Where("UsedName GLOB ?", fmt.Sprintf("*%s*", index)).Find(&shipInfos2)
+	db.Table("AzurLane_construct_time").Where("CurrentName GLOB ?", fmt.Sprintf("*%s*", index)).Find(&shipInfos1)
+	db.Table("AzurLane_construct_time").Where("UsedName GLOB ?", fmt.Sprintf("*%s*", index)).Find(&shipInfos2)
 
 	// 格式化输出
 	shipInfos := append(shipInfos1, shipInfos2...)
@@ -89,14 +89,14 @@ func nameToTime(index string) []string {
 
 	var out = make([]string, 1)
 	page := 0
-	out[page] = fmt.Sprintf("名字包含有 %s 的舰船有:\n原名:\t和谐名：\t建造时间:", index)
+	out[page] = fmt.Sprintf("名字包含有 %s 的舰船有:", index)
 	for i, data := range shipInfos {
-		if i%50 == 0 && i != 0 {
+		if i%20 == 0 && i != 0 {
 			page++
-			out[page] += fmt.Sprintf("\n每页最多50条，当前是第%d页", page)
-			out = append(out, "原名:\t和谐名：\t建造时间:")
+			out[page] += fmt.Sprintf("\n每页最多20条，当前是第%d页", page)
+			out = append(out, "")
 		}
-		out[page] += fmt.Sprintf("\n%s\t%s\t%s", data.Currentname, data.Usedname, data.Time)
+		out[page] += fmt.Sprintf("\n原名:%s\t和谐名:%s\t建造时长:%s", data.Currentname, data.Usedname, data.Time)
 	}
 
 	out = append(out, fmt.Sprintf("结果共计%d条,已全部列出", len(shipInfos)))
@@ -113,7 +113,7 @@ func timeToName(index string) []string {
 		return nil
 	}
 	var shipInfos ttn
-	db.Table("ship_map").Where("time = ?", index).Find(&shipInfos)
+	db.Table("AzurLane_construct_time").Where("time = ?", index).Find(&shipInfos)
 
 	// 格式化输出
 	if len(shipInfos) == 0 {
@@ -123,14 +123,14 @@ func timeToName(index string) []string {
 
 	var out = make([]string, 1)
 	page := 0
-	out[page] = fmt.Sprintf("建造时间为 %s 的舰船有:\n原名:\t和谐名：", index)
+	out[page] = fmt.Sprintf("建造时间为 %s 的舰船有:", index)
 	for i, data := range shipInfos {
 		if i%50 == 0 && i != 0 {
 			page++
 			out[page] += fmt.Sprintf("\n每页最多50条，当前是第%d页", page)
-			out = append(out, "原名:\t和谐名：")
+			out = append(out, "")
 		}
-		out[page] += fmt.Sprintf("\n%s\t%s", data.Currentname, data.Usedname)
+		out[page] += fmt.Sprintf("\n原名:%s\t和谐名:%s", data.Currentname, data.Usedname)
 	}
 
 	out = append(out, fmt.Sprintf("结果共计%d条,已全部列出", len(shipInfos)))

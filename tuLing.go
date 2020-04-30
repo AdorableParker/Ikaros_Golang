@@ -26,7 +26,7 @@ var response = [...]string{"伊卡洛斯记住了你的话，因为你的认真�
 	"伊卡洛斯喜欢学习\nヾ(◍°∇°◍)ﾉﾞ",
 	"虽然不太懂，但是伊卡洛斯还是把你教的知识记在了心里"}
 
-func tuling(msg string, group, qq int64) {
+func tuling(msg string, group, qq int64, flag bool) {
 	var ai []aiQA
 
 	wordinfos := Jb.ExtractWithWeight(msg, 3) // 关键词提取
@@ -80,8 +80,9 @@ func tuling(msg string, group, qq int64) {
 			return
 		}
 	}
-
-	sendMsg(group, qq, "你在说什么，我怎么听不懂\n(○´･д･)ﾉ")
+	if flag {
+		sendMsg(group, qq, "你在说什么，我怎么听不懂\n(○´･д･)ﾉ")
+	}
 }
 
 func training(msgs []string, msgID int32, group, qq int64, try uint8) {
