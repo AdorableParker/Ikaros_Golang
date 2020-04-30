@@ -1,0 +1,56 @@
+{
+	"ret": 1,
+	"apiver": 9,
+	"appid": "io.github.adorableparker.Ikaros",
+	"name": "",
+	"version": "",
+	"version_id": 0,
+	"author": "",
+	"description": "",
+	"event": [
+		{
+			"name": "私聊消息",
+			"function": "EVENT_ON_PRIVATE_MSG",
+			"type": 21,
+			"priority": 20000,
+			"id": 1
+		},
+		{
+			"name": "群消息",
+			"function": "EVENT_ON_GROUP_MSG",
+			"type": 2,
+			"priority": 20000,
+			"id": 2
+		},
+		{
+			"name": "插件启用",
+			"function": "EVENT_ON_ENABLE",
+			"type": 1003,
+			"priority": 20000,
+			"id": 1003
+		},
+		{
+			"name": "插件停用",
+			"function": "EVENT_ON_DISABLE",
+			"type": 1004,
+			"priority": 20000,
+			"id": 1004
+		},
+		{
+			"name": "群成员增加",
+			"function": "EVENT_ON_GROUP_MEMBER_INCREASE",
+			"type": 103,
+			"priority": 20000,
+			"id": 7
+		}
+	],
+	"auth": [
+		123,
+		106,
+		101,
+		130,
+		121
+	],
+	"menu": [],
+	"status": []
+}
