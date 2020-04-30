@@ -1,9 +1,39 @@
 package main
 
 import (
+	"fmt"
 	"regexp"
+	"sort"
+	"strconv"
 	"strings"
+
+	"github.com/Tnze/CoolQ-Golang-SDK/cqp"
+	"github.com/jinzhu/gorm"
 )
+
+type shipBuilding struct {
+	Currentname string `gorm:"column:Currentname"`
+	Usedname    string `gorm:"column:Usedname"`
+	Time        string `gorm:"column:time"`
+}
+
+type ttn []shipBuilding
+
+func (l ttn) Len() int           { return len(l) }
+func (l ttn) Swap(i, j int)      { l[i], l[j] = l[j], l[i] }
+func (l ttn) Less(i, j int) bool { return len(l[i].Currentname) < len(l[j].Currentname) }
+
+type ntt []shipBuilding
+
+func (l ntt) Len() int           { return len(l) }
+func (l ntt) Swap(i, j int)      { l[i], l[j] = l[j], l[i] }
+func (l ntt) Less(i, j int) bool { return s2i(l[i].Time) < s2i(l[j].Time) }
+func s2i(s string) int {
+	list := strings.Split(s, ":")
+	h, _ := strconv.Atoi(list[0])
+	m, _ := strconv.Atoi(list[1])
+	return h*60 + m
+}
 
 func construction(msg []string, msgID int32, group, qq int64, try uint8) {
 
@@ -21,10 +51,9 @@ func construction(msg []string, msgID int32, group, qq int64, try uint8) {
 		}
 		return
 	}
-	input := strings.ToUpper(msg[0])
 
 	re := regexp.MustCompile(`\d:\d\d`)
-	constructionTime := re.FindAllString(strings.Replace(input, "：", ":", -1), 1) // 正则匹配查找索引
+	constructionTime := re.FindAllString(strings.Replace(msg[0], "：", ":", -1), 1) // 正则匹配查找索引
 	var results []string
 	if constructionTime == nil { // 没有找到
 		results = nameToTime(msg[0]) // 由名字查找
@@ -36,10 +65,75 @@ func construction(msg []string, msgID int32, group, qq int64, try uint8) {
 	}
 }
 
-func nameToTime(name string) []string {
-	return []string{name}
+func nameToTime(index string) []string {
+	index = strings.ToUpper(index)
+	var shipInfos1, shipInfos2 ntt
+	// 读取数据库
+	db, err := gorm.Open("sqlite3", Datedir)
+	defer db.Close()
+	if err != nil {
+		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
+		return nil
+	}
+
+	db.Table("ship_map").Where("CurrentName GLOB ?", fmt.Sprintf("*%s*", index)).Find(&shipInfos1)
+	db.Table("ship_map").Where("UsedName GLOB ?", fmt.Sprintf("*%s*", index)).Find(&shipInfos2)
+
+	// 格式化输出
+	shipInfos := append(shipInfos1, shipInfos2...)
+	if len(shipInfos) == 0 {
+		return []string{fmt.Sprintf("名字包含有 %s 的舰船不可建造或尚未收录", index)}
+	}
+
+	sort.Sort(shipInfos) // 排序
+
+	var out = make([]string, 1)
+	page := 0
+	out[page] = fmt.Sprintf("名字包含有 %s 的舰船有:\n原名:\t和谐名：\t建造时间:", index)
+	for i, data := range shipInfos {
+		if i%50 == 0 && i != 0 {
+			page++
+			out[page] += fmt.Sprintf("\n每页最多50条，当前是第%d页", page)
+			out = append(out, "原名:\t和谐名：\t建造时间:")
+		}
+		out[page] += fmt.Sprintf("\n%s\t%s\t%s", data.Currentname, data.Usedname, data.Time)
+	}
+
+	out = append(out, fmt.Sprintf("结果共计%d条,已全部列出", len(shipInfos)))
+
+	return out
 }
 
-func timeToName(time string) []string {
-	return []string{time}
+func timeToName(index string) []string {
+	// 读取数据库
+	db, err := gorm.Open("sqlite3", Datedir)
+	defer db.Close()
+	if err != nil {
+		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
+		return nil
+	}
+	var shipInfos ttn
+	db.Table("ship_map").Where("time = ?", index).Find(&shipInfos)
+
+	// 格式化输出
+	if len(shipInfos) == 0 {
+		return []string{fmt.Sprintf("没有建造时间为 %s 的舰船或尚未收录", index)}
+	}
+	sort.Sort(shipInfos) // 排序
+
+	var out = make([]string, 1)
+	page := 0
+	out[page] = fmt.Sprintf("建造时间为 %s 的舰船有:\n原名:\t和谐名：", index)
+	for i, data := range shipInfos {
+		if i%50 == 0 && i != 0 {
+			page++
+			out[page] += fmt.Sprintf("\n每页最多50条，当前是第%d页", page)
+			out = append(out, "原名:\t和谐名：")
+		}
+		out[page] += fmt.Sprintf("\n%s\t%s", data.Currentname, data.Usedname)
+	}
+
+	out = append(out, fmt.Sprintf("结果共计%d条,已全部列出", len(shipInfos)))
+
+	return out
 }
