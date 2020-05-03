@@ -28,8 +28,6 @@ var helpText = map[string]string{
 
 &群管理权限者使用有效&
 
-命令关键字: 
-
 开启当前群的全员禁言
 
 效果: 全都给我安静

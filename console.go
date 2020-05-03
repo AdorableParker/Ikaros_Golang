@@ -59,7 +59,7 @@ func fireAlter(group int64) {
 	// 查询数据库
 	db.Table("group_info").Where("group_id = ?", group).First(&g)
 	db.Table("group_info").Where("group_id = ?", group).Update("fire", 1^g.Fire)
-	cqp.SendGroupMsg(group, fmt.Sprintf("开火权限原状态为 %t\n现状态已改为 %t", real[g.Fire], real[1^g.Fire]))
+	cqp.SendGroupMsg(group, fmt.Sprintf("开火禁令原状态为 %t\n现状态已改为 %t", real[g.Fire], real[1^g.Fire]))
 }
 
 func repeatAlter(group int64) {
