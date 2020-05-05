@@ -107,7 +107,8 @@ func saucenao(msg []string, msgID int32, group, qq int64, try uint8) {
 	case first.IsDanbooru():
 		danbooruID := first.Data.DanbooruID
 		text = fmt.Sprintf(text, title, "Danbooru", "Danbooru", danbooruID, similarity, thumbnail)
-
+	default:
+		text = "服务器未能成功返回结果,请重试"
 	}
 	sendMsg(group, qq, text)
 }

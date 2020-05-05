@@ -88,7 +88,7 @@ func nameToMap(index string) []string {
 	for i, shipInfo := range shipInfos { // 对每条数据
 		v := reflect.ValueOf(shipInfo)
 		if (i+1)%5 == 0 { // 每5条分页
-			report[inx] += fmt.Sprintf("\n每页至多10条,当前第 %d 页", inx+1)
+			report[inx] += fmt.Sprintf("\n每页至多5条,当前第 %d 页", inx+1)
 			report = append(report, "")
 			inx++
 		}
