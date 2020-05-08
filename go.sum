@@ -8,6 +8,8 @@ github.com/andybalholm/cascadia v1.1.0 h1:BuuO6sSfQNFRu1LppgbD25Hr2vLYW25JvxHs5z
 github.com/andybalholm/cascadia v1.1.0/go.mod h1:GsXiBklL0woXo1j/WYWtSYYC4ouU9PqHO0sqidkEA4Y=
 github.com/buger/jsonparser v0.0.0-20200322175846-f7e751efca13 h1:+qUNY4VRkEH46bLUwxCyUU+iOGJMQBVibAaYzWiwWcg=
 github.com/buger/jsonparser v0.0.0-20200322175846-f7e751efca13/go.mod h1:tgcrVJ81GPSF0mz+0nu1Xaz0fazGPrmmJfJtxjbHhUQ=
+github.com/buger/jsonparser v0.0.0-20200507200006-c912c6b9a0a4 h1:hvnWLyPud83yX5ScRWzo25eOjlACD6xEJ456I64TGA8=
+github.com/buger/jsonparser v0.0.0-20200507200006-c912c6b9a0a4/go.mod h1:tgcrVJ81GPSF0mz+0nu1Xaz0fazGPrmmJfJtxjbHhUQ=
 github.com/deckarep/golang-set v1.7.1 h1:SCQV0S6gTtp6itiFrTqI+pfmJ4LN85S1YzhDf9rTHJQ=
 github.com/deckarep/golang-set v1.7.1/go.mod h1:93vsz/8Wt4joVM7c2AVqh+YRMiUSc14yDtF28KmMOgQ=
 github.com/denisenkom/go-mssqldb v0.0.0-20191124224453-732737034ffd/go.mod h1:xbL0rPBG9cCiLr28tMa8zpbdarY27NDyej4t/EjAShU=

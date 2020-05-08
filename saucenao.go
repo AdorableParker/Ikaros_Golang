@@ -108,7 +108,8 @@ func saucenao(msg []string, msgID int32, group, qq int64, try uint8) {
 		danbooruID := first.Data.DanbooruID
 		text = fmt.Sprintf(text, title, "Danbooru", "Danbooru", danbooruID, similarity, thumbnail)
 	default:
-		text = "服务器未能成功返回结果,请重试"
+		// text = fmt.Sprintf("%+v\n", first)
+		text = "服务器返回的是被隐藏的低相似度结果\n(ノω<。)ノ"
 	}
 	sendMsg(group, qq, text)
 }

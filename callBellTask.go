@@ -21,15 +21,20 @@ type updateCallInfo struct {
 
 func callBellTask() {
 	var calibrationCountdown uint8 = 3 // 首次运行 进行计时器校准
+	var flag bool = true               // 逾期旗帜
+	var nextTime time.Time
 	for {
 		if calibrationCountdown >= 3 { // 如果 校准倒数大于 120 执行校准操作
 			calibrationCountdown = 0         // 进入校准部分 计数归零
 			t := time.Now().Round(time.Hour) // 返回最近的整小时数
-			if t.Before(time.Now()) {        // 如果时间晚于当前时间
-				t = t.Add(time.Hour) // 往后推一小时
+			if t.Before(time.Now()) {        // 如果时间已经过去
+				nextTime = t.Add(time.Hour) // 往后推一小时
+				cqp.AddLog(0, "整点报时逾期", fmt.Sprintln(t))
+				flag = false
+			} else {
+				cqp.AddLog(0, "整点报时时间", fmt.Sprintln(t))
+				time.Sleep(t.Sub(time.Now())) // 休眠直到该时间
 			}
-			cqp.AddLog(0, "整点报时时间", fmt.Sprintln(t))
-			time.Sleep(t.Sub(time.Now())) // 休眠直到该时间
 		}
 
 		// 链接数据库
@@ -43,7 +48,11 @@ func callBellTask() {
 		// 查询数据库
 		db.Table("group_info").Select("group_id").Where("Call_bell = ?", "1.0").Find(&checkList)
 		for _, checkGroup := range checkList {
-			cqp.SendGroupMsg(checkGroup.GroupID, fmt.Sprintf("现在%d点咯", nowTime))
+			if flag {
+				cqp.SendGroupMsg(checkGroup.GroupID, fmt.Sprintf("啊，迟到了，现在是%d点", nowTime))
+			} else {
+				cqp.SendGroupMsg(checkGroup.GroupID, fmt.Sprintf("现在%d点咯", nowTime))
+			}
 		}
 
 		msg := getScript(nowTime)
@@ -53,12 +62,20 @@ func callBellTask() {
 		// 查询数据库
 		db.Table("group_info").Select("group_id").Where("Call_bell_AZ = ?", "1.0").Find(&checkList)
 		for _, checkGroup := range checkList {
+			if flag {
+				cqp.SendGroupMsg(checkGroup.GroupID, "啊，迟到了")
+			}
 			cqp.SendGroupMsg(checkGroup.GroupID, msg)
 		}
 
 		db.Close()
 		calibrationCountdown++ // 计数增加
-		time.Sleep(time.Hour)  // 一小时后继续
+		if flag {
+			time.Sleep(time.Hour) // 一小时后继续
+		} else {
+			flag = true
+			time.Sleep(nextTime.Sub(time.Now()))
+		}
 		// cqp.AddLog(0, "test", msg)
 		// time.Sleep(2 * time.Minute) // 六分钟后继续
 	}
