@@ -21,26 +21,22 @@ type updateCallInfo struct {
 
 func callBellTask() {
 	var calibrationCountdown uint8 = 3 // 首次运行 进行计时器校准
-	var flag bool = true               // 逾期旗帜
-	var nextTime time.Time             // 下次计划时间
+	var nextTime time.Time             // 计划时间
+	var flag bool = false              // 逾期旗帜
 	for {
-		if calibrationCountdown >= 3 { // 如果 校准倒数大于 120 执行校准操作
+		if calibrationCountdown >= 3 { // 如果 校准倒数大于 3 执行校准操作
 
-			calibrationCountdown = 0         // 进入校准部分 计数归零
-			t := time.Now().Round(time.Hour) // 返回最近的整小时数 1.20 => 1.0 | 1.4 => 2.0
-			jetLag := time.Now().Sub(t)      // 时差
-			if jetLag > 0 {                 // 如果当前时间晚于预期时间
-
-				nextTime = t.Add(time.Hour)   // 往后推一小时
-				if jetLag >= 30*time.Minute { // 如果 时间差 在半小时以上
-
-					cqp.AddLog(0, "整点报时逾期", fmt.Sprintln("逾期时长:", jetLag, "计划下次执行时间:", t))
-					time.Sleep(nextTime.Sub(time.Now())) // 休眠直到该时间
-
-				} else if jetLag >= time.Minute { // 时间差 超出一分钟 但 不足半小时
-					cqp.AddLog(0, "整点报时迟到", fmt.Sprintln("迟到时长:", jetLag))
-					flag = false
-				}
+			calibrationCountdown = 0                                  // 进入校准部分 计数归零
+			nextTime := time.Now().Truncate(time.Hour).Add(time.Hour) // 返回下一个整点时间
+			jetLag := nextTime.Sub(time.Now())                        // 时差
+			if jetLag >= 59*time.Minute {                             // 时差 大于或等于 59分钟 说明逾期1分钟以内
+				cqp.AddLog(0, "整点报时", fmt.Sprintln("计划下次执行时间:", nextTime))
+			} else if jetLag >= 57*time.Minute { // 时差 大于或等于 57分钟 说明逾期3分钟以内
+				flag = true
+				cqp.AddLog(0, "整点报时逾期", fmt.Sprintln("需要校准,计划下次执行时间:", nextTime))
+			} else {
+				cqp.AddLog(0, "整点报时", fmt.Sprintln("等待时长:", jetLag, "计划下次执行时间:", nextTime))
+				time.Sleep(jetLag) // 休眠直到该时间
 			}
 		}
 
