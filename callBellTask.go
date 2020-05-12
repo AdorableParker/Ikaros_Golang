@@ -21,7 +21,6 @@ type updateCallInfo struct {
 
 func callBellTask() {
 	var calibrationCountdown uint8 = 3 // 首次运行 进行计时器校准
-	var nextTime time.Time             // 计划时间
 	var flag bool = false              // 逾期旗帜
 	for {
 		if calibrationCountdown >= 3 { // 如果 校准倒数大于 3 执行校准操作
@@ -29,12 +28,19 @@ func callBellTask() {
 			calibrationCountdown = 0                                  // 进入校准部分 计数归零
 			nextTime := time.Now().Truncate(time.Hour).Add(time.Hour) // 返回下一个整点时间
 			jetLag := nextTime.Sub(time.Now())                        // 时差
-			if jetLag >= 59*time.Minute {                             // 时差 大于或等于 59分钟 说明逾期1分钟以内
+
+			switch {
+			// 时差 大于或等于 59分钟 说明逾期1分钟以内 || 时差 小于或等于 0 说明时间刚过去
+			case jetLag >= 59*time.Minute || jetLag <= 0:
 				cqp.AddLog(0, "整点报时", fmt.Sprintln("计划下次执行时间:", nextTime))
-			} else if jetLag >= 57*time.Minute { // 时差 大于或等于 57分钟 说明逾期3分钟以内
+
+			// 时差 大于或等于 57分钟 说明逾期3分钟以内
+			case jetLag >= 57*time.Minute:
 				flag = true
 				cqp.AddLog(0, "整点报时逾期", fmt.Sprintln("需要校准,计划下次执行时间:", nextTime))
-			} else {
+
+			// 其他情况 ∈ 时差 在 57~0 之间
+			default:
 				cqp.AddLog(0, "整点报时", fmt.Sprintln("等待时长:", jetLag, "计划下次执行时间:", nextTime))
 				time.Sleep(jetLag) // 休眠直到该时间
 			}
@@ -75,7 +81,7 @@ func callBellTask() {
 		calibrationCountdown++ // 计数增加
 		if flag {
 			flag = false
-			time.Sleep(nextTime.Sub(time.Now()))
+			time.Sleep(time.Now().Truncate(time.Hour).Add(time.Hour).Sub(time.Now()))  // 虽然看起来很长,但是功能就是等待到下一个整点而已
 		} else {
 			time.Sleep(time.Hour) // 一小时后继续
 		}
