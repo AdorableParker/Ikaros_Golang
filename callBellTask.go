@@ -74,10 +74,10 @@ func callBellTask() {
 		db.Close()
 		calibrationCountdown++ // 计数增加
 		if flag {
-			time.Sleep(time.Hour) // 一小时后继续
-		} else {
-			flag = true
+			flag = false
 			time.Sleep(nextTime.Sub(time.Now()))
+		} else {
+			time.Sleep(time.Hour) // 一小时后继续
 		}
 		// cqp.AddLog(0, "test", msg)
 		// time.Sleep(2 * time.Minute) // 六分钟后继续
