@@ -37,42 +37,19 @@ func tuling(msg string, group, qq int64, flag bool) {
 		source.Add(word)
 	}
 
+	// 链接数据库
+	db, err := gorm.Open("sqlite3", Appdir+"Ai.db")
+	defer db.Close()
+	if err != nil {
+		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
+		sendMsg(group, qq, "数据库连接失败,智商已离线")
+		return
+	}
+
 	for _, i := range wordinfos { // 第一次 关键词索引寻找
-		var QAList = make(map[string]string, 0)
-
-		// 链接数据库
-		db, err := gorm.Open("sqlite3", Appdir+"Ai.db")
-		defer db.Close()
-		if err != nil {
-			cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
-			sendMsg(group, qq, "数据库连接失败,智商已离线")
-			return
-		}
-
 		// 查询数据库
 		db.Table("universal_corpus").Select("answer, question").Where("keys = ?", i.Word).Find(&ai)
-		for _, pair := range ai {
-			QAList[pair.Question] = pair.Answer
-		}
-
-		var maxScore float32 = 0.5
-		var answerList = make([]string, 0)
-		for q, a := range QAList { // 对每个问答组
-			contrast := mapset.NewSet()
-			for _, word := range Jb.Cut(q, true) { // 分词
-				contrast.Add(word)
-			}
-			score := float32(source.Intersect(contrast).Cardinality()) / float32(source.Union(contrast).Cardinality())
-			// cqp.AddLog(0, "测试信息", fmt.Sprintf("测试信息:%v\n%v\n%v\n%v", score, words, q, a))
-			switch {
-			case score > maxScore:
-				maxScore = score
-				answerList = []string{a}
-			case score == maxScore:
-				answerList = append(answerList, a)
-			}
-
-		}
+		answerList := filter(ai, source, 0.5)
 		numAanswers := len(answerList)
 		if numAanswers != 0 {
 			rand.Seed(time.Now().UnixNano())
@@ -80,9 +57,44 @@ func tuling(msg string, group, qq int64, flag bool) {
 			return
 		}
 	}
+
+	db.Table("universal_corpus").Select("answer, question").Where("question = ?", msg).Find(&ai)
+	answerList := filter(ai, source, 0.75)
+	numAanswers := len(answerList)
+	if numAanswers != 0 {
+		rand.Seed(time.Now().UnixNano())
+		sendMsg(group, qq, answerList[rand.Intn(numAanswers)])
+		return
+	}
+
 	if flag {
 		sendMsg(group, qq, "你在说什么，我怎么听不懂\n(○´･д･)ﾉ")
 	}
+}
+
+func filter(ai []aiQA, source mapset.Set, maxScore float32) []string {
+	var QAList = make(map[string]string, 0)
+	for _, pair := range ai {
+		QAList[pair.Question] = pair.Answer
+	}
+	var answerList = make([]string, 0)
+	for q, a := range QAList { // 对每个问答组
+		contrast := mapset.NewSet()
+		for _, word := range Jb.Cut(q, true) { // 分词
+			contrast.Add(word)
+		}
+		score := float32(source.Intersect(contrast).Cardinality()) / float32(source.Union(contrast).Cardinality())
+		// cqp.AddLog(0, "测试信息", fmt.Sprintf("测试信息:%v\n%v\n%v\n%v", score, words, q, a))
+		switch {
+		case score > maxScore:
+			maxScore = score
+			answerList = []string{a}
+		case score == maxScore:
+			answerList = append(answerList, a)
+		}
+
+	}
+	return answerList
 }
 
 func training(msgs []string, msgID int32, group, qq int64, try uint8) {
