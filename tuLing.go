@@ -112,8 +112,8 @@ func training(msgs []string, msgID int32, group, qq int64, try uint8) {
 		}
 		return
 	}
-
-	if !strings.Contains(msgs[0], "#") {
+	msgString := strings.Join(msgs[1:], " ")
+	if !strings.Contains(msgString, "#") {
 		try++         // 已尝试次数+1
 		if try <= 3 { // 如果已尝试次数不超过3次
 			if try == 1 {
@@ -138,7 +138,7 @@ func training(msgs []string, msgID int32, group, qq int64, try uint8) {
 	}
 	// 解析问答组
 	var QAPair aiQA
-	QA := strings.SplitN(msgs[0], "#", 2)
+	QA := strings.SplitN(msgString, "#", 2)
 	keyWord := Jb.ExtractWithWeight(QA[0], 1) // 关键词提取
 	if len(keyWord) <= 0 {
 		QAPair.Keys = QA[0]
