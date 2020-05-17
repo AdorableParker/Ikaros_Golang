@@ -50,6 +50,7 @@ func tuling(msg string, group, qq int64, flag bool) {
 		// 查询数据库
 		db.Table("universal_corpus").Select("answer, question").Where("keys = ?", i.Word).Find(&ai)
 		answerList := filter(ai, source, 0.5)
+
 		numAanswers := len(answerList)
 		if numAanswers != 0 {
 			rand.Seed(time.Now().UnixNano())
@@ -75,10 +76,10 @@ func tuling(msg string, group, qq int64, flag bool) {
 func filter(ai []aiQA, source mapset.Set, maxScore float32) []string {
 	var QAList = make(map[string]string, 0)
 	for _, pair := range ai {
-		QAList[pair.Question] = pair.Answer
+		QAList[pair.Answer] = pair.Question
 	}
 	var answerList = make([]string, 0)
-	for q, a := range QAList { // 对每个问答组
+	for a, q := range QAList { // 对每个问答组
 		contrast := mapset.NewSet()
 		for _, word := range Jb.Cut(q, true) { // 分词
 			contrast.Add(word)
