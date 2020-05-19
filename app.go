@@ -174,6 +174,8 @@ func sendMsg(group, qq int64, msg string) {
 
 func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 	switch msg[0] {
+	case "响应池":
+		cqp.AddLog(0, "调试输出", fmt.Sprintln(stagedSessionPool))
 	case "training", "训练", "调教", "教学":
 		training(msg[1:], msgID, fromGroup, fromQQ, 0)
 	case "activity", "活动进度", "进度计算", "奖池计算":

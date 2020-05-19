@@ -113,7 +113,7 @@ func training(msgs []string, msgID int32, group, qq int64, try uint8) {
 		}
 		return
 	}
-	msgString := strings.Join(msgs[1:], " ")
+	msgString := strings.Join(msgs, " ")
 	if !strings.Contains(msgString, "#") {
 		try++         // 已尝试次数+1
 		if try <= 3 { // 如果已尝试次数不超过3次
