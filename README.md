@@ -1,15 +1,16 @@
 # Ikaros_Golang #
 
-[![GitHub issues](README.assets/Ikaros_Golang-1590130591581.svg)](https://github.com/AdorableParker/Ikaros_Golang/issues)
-[![GitHub stars](README.assets/Ikaros_Golang.svg)](https://github.com/AdorableParker/Ikaros_Golang/stargazers)
-[![GitHub license](README.assets/Ikaros_Golang-1590133851533.svg)](https://github.com/AdorableParker/Ikaros_Golang/blob/master/LICENSE)
-![GitHub last commit](README.assets/Ikaros_Golang-1590133740113.svg)
+[![GitHub issues](https://img.shields.io/github/issues/AdorableParker/Ikaros_Golang?style=plastic)](https://github.com/AdorableParker/Ikaros_Golang/issues)
+[![GitHub stars](https://img.shields.io/github/stars/AdorableParker/Ikaros_Golang)](https://github.com/AdorableParker/Ikaros_Golang/stargazers)
+[![GitHub license](https://img.shields.io/github/license/AdorableParker/Ikaros_Golang?style=plastic)](https://github.com/AdorableParker/Ikaros_Golang/blob/master/LICENSE)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/AdorableParker/Ikaros_Golang?style=plastic)
+![GitHub last commit](https://img.shields.io/github/last-commit/AdorableParker/Ikaros_Golang?style=plastic)
 
 自用QQ机器人伊卡洛斯的Golang版本
 
 因为Python太慢，所以从Python版本迁移过来
 
-这个语音版本不知道我能坚持维护多久，说起来Python前前后后也更新了2年了...
+这个语言版本不知道我能坚持维护多久，说起来Python前前后后也更新了2年了...
 
 ~~另外，因为gojieba库的编译报错问题，也不知道是我做错了什么，或许哪天实在忍不了了会转C++~~
 
