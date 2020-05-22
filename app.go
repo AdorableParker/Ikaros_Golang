@@ -46,6 +46,9 @@ var wg sync.WaitGroup
 // SauceNAO 初始化开关
 var SauceNAO bool
 
+// LoadingFinished 初始化完成标识
+var LoadingFinished bool
+
 func newStagedSession(group, qq int64, function func([]string, int32, int64, int64, uint8), parameter []string, try uint8) *stagedSession {
 	return &stagedSession{
 		Group:          group,     // 调用者所在群
@@ -74,19 +77,18 @@ func onEnable() int32 {
 	Appdir = cqp.GetAppDir()
 	Datedir = filepath.Join(Appdir, "User.db")
 	atMe = fmt.Sprintf("[CQ:at,qq=%d]", cqp.GetLoginQQ())
-
 	// 每小时的 报时任务
 	wg.Add(1)
 	go callBellTask()
-
+	
 	// 每六分钟的 检查动态更新任务
 	wg.Add(1)
 	go updateCheckTask()
-
+	
 	// 每天的晚九点半 提醒任务
 	wg.Add(1)
 	go remindTask()
-
+	LoadingFinished = true
 	wg.Wait()
 	return 0
 }
@@ -101,6 +103,10 @@ func onDisable() int32 {
 }
 
 func onPrivateMsg(subType, msgID int32, fromQQ int64, msg string, font int32) int32 {
+	if !LoadingFinished {
+		cqp.AddLog(0, "初始化中", "初始化完成前不处理消息")
+		return 0
+	}
 	// cqp.SendPrivateMsg(fromQQ, msg) //复读机
 	ok := parser(msgID, -1, fromQQ, msg)
 	if !ok {
@@ -110,6 +116,11 @@ func onPrivateMsg(subType, msgID int32, fromQQ int64, msg string, font int32) in
 }
 
 func onGroupMsg(subType, msgID int32, fromGroup, fromQQ int64, fromAnonymous, msg string, font int32) int32 {
+	if !LoadingFinished {
+		cqp.AddLog(0, "初始化中", "初始化完成前不处理消息")
+		return 0
+	}
+
 	if atForMe(msg) {
 		tuling(strings.NewReplacer(atMe, "").Replace(msg), fromGroup, fromQQ, true)
 		return 0
@@ -149,7 +160,7 @@ func parser(msgID int32, fromGroup, fromQQ int64, msg string) (ok bool) {
 
 	if len(instructionPacket) != 0 { // 如果有前缀
 		ok = functionList(instructionPacket, msgID, fromGroup, fromQQ) // 判定功能触发
-		return
+		return ok
 	}
 	return true
 }
@@ -174,8 +185,6 @@ func sendMsg(group, qq int64, msg string) {
 
 func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 	switch msg[0] {
-	case "响应池":
-		cqp.AddLog(0, "调试输出", fmt.Sprintln(stagedSessionPool))
 	case "training", "训练", "调教", "教学":
 		training(msg[1:], msgID, fromGroup, fromQQ, 0)
 	case "activity", "活动进度", "进度计算", "奖池计算":
