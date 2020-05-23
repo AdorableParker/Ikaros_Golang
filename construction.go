@@ -91,7 +91,6 @@ func nameToTime(index string) []string {
 	page := 0
 	out[page] = fmt.Sprintf("名字包含有 %s 的舰船有:", index)
 	for i, data := range shipInfos {
-		cqp.AddLog(0, "调试", fmt.Sprintln(len(shipInfos)))
 		if i%20 == 0 && i != 0 {
 			out[page] += fmt.Sprintf("\n每页最多20条，当前是第%d页", page+1)
 			page++

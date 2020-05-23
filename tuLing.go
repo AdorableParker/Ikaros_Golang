@@ -18,6 +18,13 @@ type aiQA struct {
 	Answer   string `gorm:"column:answer"`
 	Question string `gorm:"column:question"`
 	Keys     string `gorm:"column:keys"`
+	From     int64  `gorm:"column:from"`
+}
+
+type favorScore struct {
+	ID int64 `gorm:"column:ID"`
+	// Score string `gorm:"column:score"`  // 好感度分数
+	Banned bool `gorm:"column:banned"`
 }
 
 var response = [...]string{"伊卡洛斯记住了你的话，因为你的认真教导，好感度上升了",
@@ -137,6 +144,15 @@ func training(msgs []string, msgID int32, group, qq int64, try uint8) {
 		sendMsg(group, qq, "数据库连接失败,智商已离线")
 		return
 	}
+
+	var blacklist favorScore
+	db.Table("favor_score").Where("ID = ?", qq).Find(&blacklist)
+	cqp.AddLog(0,"测试",fmt.Sprintln(blacklist))
+	if blacklist.Banned {
+		sendMsg(group, qq, "很多哥哥姐姐说你是坏人，我不要听你的的ヾ(≧へ≦)〃\n（由于多人举报，你已经被加入黑名单了哦)")
+		return
+	}
+
 	// 解析问答组
 	var QAPair aiQA
 	QA := strings.SplitN(msgString, "#", 2)
@@ -149,6 +165,7 @@ func training(msgs []string, msgID int32, group, qq int64, try uint8) {
 
 	QAPair.Question = QA[0]
 	QAPair.Answer = QA[1]
+	QAPair.From = qq
 
 	// 写入数据库
 	db.Table("universal_corpus").Create(&QAPair)
