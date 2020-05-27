@@ -80,11 +80,11 @@ func onEnable() int32 {
 	// 每小时的 报时任务
 	wg.Add(1)
 	go callBellTask()
-	
+
 	// 每六分钟的 检查动态更新任务
 	wg.Add(1)
 	go updateCheckTask()
-	
+
 	// 每天的晚九点半 提醒任务
 	wg.Add(1)
 	go remindTask()
@@ -191,6 +191,8 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 		activity(msg[1:], msgID, fromGroup, fromQQ, 0)
 	case "shipMap", "打捞定位":
 		shipMap(msg[1:], msgID, fromGroup, fromQQ, 0)
+	case "realName","船名查询", "和谐名":
+		realName(msg[1:], msgID, fromGroup, fromQQ, 0)
 	case "construction", "建造时间查询", "建造时间", "建造查询":
 		construction(msg[1:], msgID, fromGroup, fromQQ, 0)
 	case "saucenao", "图片搜索", "搜图":
