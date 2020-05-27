@@ -43,15 +43,22 @@ func realName(msg []string, msgID int32, group, qq int64, try uint8) {
 	db.Table("Roster").Where("code GLOB ?", fmt.Sprintf("*%s*", index)).Find(&roster1)
 	db.Table("Roster").Where("name GLOB ?", fmt.Sprintf("*%s*", index)).Find(&roster2)
 
-	r := append(roster1, roster2...)
+	var r = make(map[string]string)
+
+	for _, i := range roster1 {
+		r[i.Code] = i.Name
+	}
+	for _, i := range roster2 {
+		r[i.Code] = i.Name
+	}
 
 	// 格式化输出
 	if len(r) == 0 {
 		sendMsg(group, qq, "名字中包含有 %s 的舰船未收录")
 	}
 	var str string = fmt.Sprintf("名字中包含有 %s 的舰船有:", index)
-	for _, pair := range r {
-		str += fmt.Sprintf("\n和谐名:%s    原名:%s", pair.Code, pair.Name)
+	for code, name := range r {
+		str += fmt.Sprintf("\n和谐名:%s    原名:%s", code, name)
 	}
 	sendMsg(group, qq, str)
 }
