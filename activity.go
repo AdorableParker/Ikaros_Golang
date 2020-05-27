@@ -57,6 +57,7 @@ func activity(msg []string, msgID int32, group, qq int64, try uint8) {
 			sendMsg(group, qq, "计算被迫结束,原因:\n (°д°) 奇怪的参数增加了.jpg")
 			return
 		}
+		sendMsg(group, qq, "自定义目标已设定")
 
 	} else {
 		aims, _ = cfg.Section("shop").Key("all").Int()

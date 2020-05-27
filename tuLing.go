@@ -56,7 +56,7 @@ func tuling(msg string, group, qq int64, flag bool) {
 	for _, i := range wordinfos { // 第一次 关键词索引寻找
 		// 查询数据库
 		db.Table("universal_corpus").Select("answer, question").Where("keys = ?", i.Word).Find(&ai)
-		answerList := filter(ai, source, 0.5)
+		answerList := filter(ai, source, 0.8)
 
 		numAanswers := len(answerList)
 		if numAanswers != 0 {
@@ -67,7 +67,7 @@ func tuling(msg string, group, qq int64, flag bool) {
 	}
 
 	db.Table("universal_corpus").Select("answer, question").Where("question = ?", msg).Find(&ai)
-	answerList := filter(ai, source, 0.75)
+	answerList := filter(ai, source, 0.85)
 	numAanswers := len(answerList)
 	if numAanswers != 0 {
 		rand.Seed(time.Now().UnixNano())
@@ -147,7 +147,7 @@ func training(msgs []string, msgID int32, group, qq int64, try uint8) {
 
 	var blacklist favorScore
 	db.Table("favor_score").Where("ID = ?", qq).Find(&blacklist)
-	cqp.AddLog(0,"测试",fmt.Sprintln(blacklist))
+	// cqp.AddLog(0,"测试",fmt.Sprintln(blacklist))
 	if blacklist.Banned {
 		sendMsg(group, qq, "很多哥哥姐姐说你是坏人，我不要听你的的ヾ(≧へ≦)〃\n（由于多人举报，你已经被加入黑名单了哦)")
 		return
