@@ -38,27 +38,17 @@ func realName(msg []string, msgID int32, group, qq int64, try uint8) {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
 		return
 	}
-	var roster1, roster2 []roster
+	var rosters []roster
 
-	db.Table("Roster").Where("code GLOB ?", fmt.Sprintf("*%s*", index)).Find(&roster1)
-	db.Table("Roster").Where("name GLOB ?", fmt.Sprintf("*%s*", index)).Find(&roster2)
-
-	var r = make(map[string]string)
-
-	for _, i := range roster1 {
-		r[i.Code] = i.Name
-	}
-	for _, i := range roster2 {
-		r[i.Code] = i.Name
-	}
+	db.Table("Roster").Where("code GLOB ?", fmt.Sprintf("*%s*", index)).Or("name GLOB ?", fmt.Sprintf("*%s*", index)).Find(&rosters)
 
 	// 格式化输出
-	if len(r) == 0 {
+	if len(rosters) == 0 {
 		sendMsg(group, qq, "名字中包含有 %s 的舰船未收录")
 	}
 	var str string = fmt.Sprintf("名字中包含有 %s 的舰船有:", index)
-	for code, name := range r {
-		str += fmt.Sprintf("\n和谐名:%s    原名:%s", code, name)
+	for _, object := range rosters {
+		str += fmt.Sprintf("\n和谐名:%s    原名:%s", object.Code, object.Name)
 	}
 	sendMsg(group, qq, str)
 }

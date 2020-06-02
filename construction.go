@@ -67,7 +67,7 @@ func construction(msg []string, msgID int32, group, qq int64, try uint8) {
 
 func nameToTime(index string) []string {
 	index = strings.ToUpper(index)
-	var shipInfos1, shipInfos2 ntt
+	var shipInfos ntt
 	// 读取数据库
 	db, err := gorm.Open("sqlite3", Datedir)
 	defer db.Close()
@@ -76,11 +76,9 @@ func nameToTime(index string) []string {
 		return nil
 	}
 
-	db.Table("AzurLane_construct_time").Where("CurrentName GLOB ?", fmt.Sprintf("*%s*", index)).Find(&shipInfos1)
-	db.Table("AzurLane_construct_time").Where("UsedName GLOB ?", fmt.Sprintf("*%s*", index)).Find(&shipInfos2)
+	db.Table("AzurLane_construct_time").Where("CurrentName GLOB ?", fmt.Sprintf("*%s*", index)).Or("UsedName GLOB ?", fmt.Sprintf("*%s*", index)).Find(&shipInfos)
 
 	// 格式化输出
-	shipInfos := append(shipInfos1, shipInfos2...)
 	if len(shipInfos) == 0 {
 		return []string{fmt.Sprintf("名字包含有 %s 的舰船不可建造或尚未收录", index)}
 	}

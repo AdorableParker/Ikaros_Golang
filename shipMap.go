@@ -61,7 +61,7 @@ func shipMap(msg []string, msgID int32, group, qq int64, try uint8) {
 
 func nameToMap(index string) []string {
 	index = strings.ToUpper(index) // 格式化为大写
-	var shipInfos1, shipInfos2 []shipSalvageMap
+	var shipInfos []shipSalvageMap
 
 	// 读取数据库
 	db, err := gorm.Open("sqlite3", Datedir)
@@ -70,9 +70,9 @@ func nameToMap(index string) []string {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
 		return nil
 	}
-	db.Table("ship_map").Where("UsedName GLOB ?", fmt.Sprintf("*%s*", index)).Find(&shipInfos1)
-	db.Table("ship_map").Where("CurrentName GLOB ?", fmt.Sprintf("*%s*", index)).Find(&shipInfos2)
-	shipInfos := append(shipInfos1, shipInfos2...)
+
+	db.Table("ship_map").Where("CurrentName GLOB ?", fmt.Sprintf("*%s*", index)).Or("UsedName GLOB ?", fmt.Sprintf("*%s*", index)).Find(&shipInfos)
+
 	// 格式化输出
 	if len(shipInfos) == 0 {
 		return []string{fmt.Sprintf("名字中包含有 %s 的舰船无法打捞或未收录", index)}
