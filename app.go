@@ -185,13 +185,15 @@ func sendMsg(group, qq int64, msg string) {
 
 func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 	switch msg[0] {
+	case "calculato", "计算", "计算器":
+		calculato(msg[1:], msgID, fromGroup, fromQQ, 0)
 	case "training", "训练", "调教", "教学":
 		training(msg[1:], msgID, fromGroup, fromQQ, 0)
 	case "activity", "活动进度", "进度计算", "奖池计算":
 		activity(msg[1:], msgID, fromGroup, fromQQ, 0)
 	case "shipMap", "打捞定位":
 		shipMap(msg[1:], msgID, fromGroup, fromQQ, 0)
-	case "realName","船名查询", "和谐名":
+	case "realName", "船名查询", "和谐名":
 		realName(msg[1:], msgID, fromGroup, fromQQ, 0)
 	case "construction", "建造时间查询", "建造时间", "建造查询":
 		construction(msg[1:], msgID, fromGroup, fromQQ, 0)

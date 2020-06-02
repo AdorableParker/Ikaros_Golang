@@ -22,7 +22,7 @@ func realName(msg []string, msgID int32, group, qq int64, try uint8) {
 			} else {
 				sendMsg(group, qq, "索引不能为空哦,再发一次吧\n(。・ω・。)") // 发送提示消息
 			}
-			stagedSessionPool[msgID] = newStagedSession(group, qq, construction, msg, try) // 添加新的会话到会话池
+			stagedSessionPool[msgID] = newStagedSession(group, qq, realName, msg, try) // 添加新的会话到会话池
 		} else {
 			sendMsg(group, qq, "错误次数太多了哦,先看看使用说明吧\n(。・ω・。)") // 发送提示消息
 		}
