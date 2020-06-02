@@ -23,9 +23,10 @@ def sql_write(info):  # 添加行
     conn = sqlite3.connect("Ai.db")
     pointer = conn.cursor()
     print(info)
-    pointer.execute('''INSERT INTO universal_corpus ("answer", "question", "keys") VALUES {};'''.format(info[:3]))
     if info[3] != None:
-        pointer.execute('''INSERT INTO universal_corpus ("from") VALUES {};'''.format(info[3]))
+        pointer.execute('''INSERT INTO universal_corpus ("answer", "question", "keys","from") VALUES {};'''.format(info))
+    else:
+        pointer.execute('''INSERT INTO universal_corpus ("answer", "question", "keys") VALUES {};'''.format(info[:3]))
 
     conn.commit()
     conn.close()
@@ -60,7 +61,7 @@ def main():
             print("已删除库中所有记录,开始写入数据")
             s = 0
             for i in a:
-                print(i)
+                # print(i)
                 sql_write(i)
                 s += 1
                 print("已写入", s, "条,共有", tasks, "条需要写入", end="\r")
