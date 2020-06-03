@@ -183,7 +183,7 @@ func calculation(input string) (output float64, err error) {
 				}
 			}
 		case ')':
-			fmt.Println(&numS, &num, "172 line")
+			// fmt.Println(&numS, &num, "172 line")
 			if flag {
 				flag = false
 			} else {
@@ -195,7 +195,9 @@ func calculation(input string) (output float64, err error) {
 			ns := signs.read() // 栈顶运算符
 
 			for ns != '(' {
-
+				if ns == nil {
+					return 0, fmt.Errorf("不匹配的')'")
+				}
 				a := num.read().(float64) // 取出 后运算值
 				num.det()
 				b := num.read().(float64) // 取出 前运算值
