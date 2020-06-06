@@ -59,7 +59,7 @@ func saucenao(msg []string, msgID int32, group, qq int64, try uint8) {
 	response, err := Client.FromFile(fileDir)
 	if err != nil {
 		cqp.AddLog(20, "搜图异常", fmt.Sprintln(err))
-		sendMsg(group, qq, "搜图引擎运行异常,请联系维护 ≧ ﹏ ≦")
+		sendMsg(group, qq, "搜图引擎运行异常,请稍后重试 ≧ ﹏ ≦")
 		return
 	}
 	first := response.First()
