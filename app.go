@@ -14,9 +14,10 @@ import (
 
 //go:generate cqcfg -c .
 // cqp: 名称: Ikaros
-// cqp: 版本: 1.0.0:1
+// cqp: 版本: 1.2.0:1
 // cqp: 作者: adorableparker
 // cqp: 简介: 模板测试
+// cqp: 菜单
 
 type stagedSession struct {
 	Group          int64                                       // 调用者所在群
@@ -49,6 +50,9 @@ var SauceNAO bool
 // LoadingFinished 初始化完成标识
 var LoadingFinished bool
 
+// DBConn 数据库连接控制标记
+var DBConn bool
+
 func newStagedSession(group, qq int64, function func([]string, int32, int64, int64, uint8), parameter []string, try uint8) *stagedSession {
 	return &stagedSession{
 		Group:          group,     // 调用者所在群
@@ -62,7 +66,7 @@ func newStagedSession(group, qq int64, function func([]string, int32, int64, int
 func main() { /*此处应当留空*/ }
 
 func init() {
-	cqp.AppID = "io.github.adorableparker.Ikaros" // TODO: 修改为这个插件的ID
+	cqp.AppID = "com.adorableparker.github.ikaros_golang" // TODO: 修改为这个插件的ID
 	cqp.PrivateMsg = onPrivateMsg
 	cqp.GroupMsg = onGroupMsg
 	cqp.Enable = onEnable
@@ -73,6 +77,7 @@ func init() {
 
 func onEnable() int32 {
 	SauceNAO = false
+	DBConn = true
 	Jb = gojieba.NewJieba()
 	Appdir = cqp.GetAppDir()
 	Datedir = filepath.Join(Appdir, "User.db")
@@ -185,6 +190,8 @@ func sendMsg(group, qq int64, msg string) {
 
 func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 	switch msg[0] {
+	case "dbCM", "离线数据库", "连接数据库":
+		dbCM(msg[1:], msgID, fromGroup, fromQQ, 0)
 	case "calculato", "计算", "计算器":
 		calculato(msg[1:], msgID, fromGroup, fromQQ, 0)
 	case "training", "训练", "调教", "教学":

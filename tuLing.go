@@ -44,6 +44,12 @@ func tuling(msg string, group, qq int64, flag bool) {
 		source.Add(word)
 	}
 
+	if !DBConn {
+		if flag {
+			sendMsg(group, qq, "数据库离线状态")
+		}
+		return
+	}
 	// 链接数据库
 	db, err := gorm.Open("sqlite3", Appdir+"Ai.db")
 	defer db.Close()
@@ -106,6 +112,11 @@ func filter(ai []aiQA, source mapset.Set, maxScore float32) []string {
 }
 
 func training(msgs []string, msgID int32, group, qq int64, try uint8) {
+	if !DBConn {
+		sendMsg(group, qq, "数据库离线状态")
+		return
+	}
+
 	if len(msgs) == 0 {
 		try++         // 已尝试次数+1
 		if try <= 3 { // 如果已尝试次数不超过3次

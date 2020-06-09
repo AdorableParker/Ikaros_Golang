@@ -1,7 +1,7 @@
 {
 	"ret": 1,
 	"apiver": 9,
-	"appid": "io.github.adorableparker.Ikaros",
+	"appid": "com.adorableparker.github.ikaros_golang",
 	"name": "",
 	"version": "",
 	"version_id": 0,
@@ -45,11 +45,11 @@
 		}
 	],
 	"auth": [
-		101,
+		123,
+		130,
 		106,
 		121,
-		123,
-		130
+		101
 	],
 	"menu": [],
 	"status": []
