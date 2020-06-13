@@ -127,7 +127,7 @@ func onGroupMsg(subType, msgID int32, fromGroup, fromQQ int64, fromAnonymous, ms
 	}
 
 	if atForMe(msg) {
-		tuling(strings.NewReplacer(atMe, "").Replace(msg), fromGroup, fromQQ, true)
+		tuling(strings.Join(strings.Split(msg, atMe), ""), fromGroup, fromQQ, true)
 		return 0
 	}
 	ok := parser(msgID, fromGroup, fromQQ, msg)

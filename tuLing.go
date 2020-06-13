@@ -35,11 +35,10 @@ var response = [...]string{"伊卡洛斯记住了你的话，因为你的认真�
 
 func tuling(msg string, group, qq int64, flag bool) {
 	var ai []aiQA
-
+	msg = strings.TrimSpace(msg)              // 移除前后端空格
 	wordinfos := Jb.ExtractWithWeight(msg, 3) // 关键词提取
 	compareSources := Jb.Cut(msg, true)       // 分词
 	source := mapset.NewSet()                 // 建立集合
-
 	for _, word := range compareSources {
 		source.Add(word)
 	}
