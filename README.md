@@ -19,9 +19,9 @@
 
 1.  下载`app.dll`和`app.json`文件
 2.  打开 Cool Q 的开发者模式
-3.  把`app.dll`和`app.json`放到`..\dev\io.github.adorableparker.Ikaros`目录下
+3.  把`app.dll`和`app.json`放到`..\dev\com.adorableparker.github.ikaros_golang`目录下
 4.  下载`nfiguration_data`文件夹里面的文件
-5.  放置到`..\data\app\io.github.adorableparker.Ikaros`目录下
+5.  放置到`..\data\app\com.adorableparker.github.ikaros_golang`目录下
 
 ---
 
