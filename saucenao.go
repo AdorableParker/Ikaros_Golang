@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"regexp"
 
 	"github.com/Tnze/CoolQ-Golang-SDK/cqp"
@@ -112,4 +113,5 @@ func saucenao(msg []string, msgID int32, group, qq int64, try uint8) {
 		text = "服务器返回的是被隐藏的低相似度结果\n(ノω<。)ノ"
 	}
 	sendMsg(group, qq, text)
+	os.Remove(fileDir)
 }
