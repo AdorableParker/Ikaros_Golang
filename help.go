@@ -77,7 +77,18 @@ var helpText = map[string]string{
 
 效果: 博士，您还有许多事情需要处理，现在还不能休息哦。
 
-# 欲启用自动更新模式请使用命令 "控制台" 获取更多信息`,
+######################
+# 欲启用以上几个的自动更新模式请使用命令 "控制台" 获取更多信息
+
+------dynamicByID------
+命令关键字: "B站动态"
+命令输入格式: 
+
+B站动态<空格><UID>
+例:
+B站动态 114514
+
+效果: 返回该UID所指向的用户的B站动态的最新那条`,
 	"#以图搜图": `------img_saucenao------
 命令关键字: "saucenao", "图片搜索", "搜图"
 命令输入格式: 
@@ -188,7 +199,7 @@ func help(nameList []string, fromGroup, fromQQ int64) {
 			text = append(text, i)
 		}
 		sendMsg(fromGroup, fromQQ, strings.Join(text, "\n"))
-		sendMsg(fromGroup, fromQQ, "带有>标志的为命令集\n带有#标志的为非同名命令,即命令关键词与命令名不一致\n具体命令关键字都请查看详细内容获知")
-		sendMsg(fromGroup, fromQQ, "查看详细帮助内容\n使用帮助<空格><命令名>\n例:\n帮助 >wiki榜单\n效果: 根据输入的命令名，返回帮助信息\n######################")
+		sendMsg(fromGroup, fromQQ, "带有>标志的为命令集合\n带有#标志的为非同名命令,即命令关键词与命令名不一致\n具体命令关键字都请查看详细内容获知")
+		sendMsg(fromGroup, fromQQ, "查看详细帮助内容\n使用帮助<空格><命令名>\n例:\n帮助 >wiki榜单\n帮助 #碧蓝航线活动进度\n帮助 群活跃数据\n######################")
 	}
 }

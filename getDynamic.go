@@ -18,6 +18,30 @@ type crawlerUpdateInfo struct {
 	UpdateTime int64 `gorm:"column:update_time"`
 }
 
+func dynamicByID(msg []string, msgID int32, group, qq int64, try uint8) {
+	if len(msg) == 0 { // 如果没有获取到参数
+		try++         // 已尝试次数+1
+		if try <= 3 { // 如果已尝试次数不超过3次
+			if try == 1 {
+				sendMsg(group, qq, "请输入up的UID\nq(≧▽≦q)")
+			} else {
+				sendMsg(group, qq, "不能为空哦,再发一次吧\n(。・ω・。)") // 发送提示消息
+			}
+			stagedSessionPool[msgID] = newStagedSession(group, qq, dynamicByID, msg, try) // 添加新的会话到会话池
+		} else {
+			sendMsg(group, qq, "错误次数太多了哦,先看看使用说明吧\n(。・ω・。)") // 发送提示消息
+		}
+		return
+	}
+
+	uid, err := strconv.ParseUint(msg[0], 10, 0)
+	if err != nil {
+		sendMsg(group, qq, "不正常的UID,你怕不是打错了")
+		return
+	}
+	sendDynamic([]string{}, group, qq, int(uid))
+}
+
 func sendDynamic(tomsg []string, group, qq int64, id int) {
 	var pages int = 0
 	var err error
@@ -98,6 +122,8 @@ func getDynamic(id, pages int, flag bool) (int64, string, []string) {
 	cardold, _ := jsonparser.GetString([]byte(bodyText), "data", "cards", index, "card")
 	card := []byte(cardold)
 	switch dynamicType {
+	case 0: // 无效数据
+		return 0, "没有相关动态信息", nil
 	case 1: // 转发
 		content, _ := jsonparser.GetString(card, "item", "content") // 评论转发
 		return timestamp, fmt.Sprintf("转发并评论：%s", content), nil
