@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"strings"
 
 	"github.com/Tnze/CoolQ-Golang-SDK/cqp"
 	"github.com/jozsefsallai/gophersauce"
@@ -59,6 +60,11 @@ func saucenao(msg []string, msgID int32, group, qq int64, try uint8) {
 	sendMsg(group, qq, "引擎初始化完成, 开始搜图")
 	response, err := Client.FromFile(fileDir)
 	if err != nil {
+		if strings.Contains(err.Error(), "Daily Search Limit Exceeded.") {
+			cqp.AddLog(20, "搜图异常", "查询次数超限")
+			sendMsg(group, qq, "API超出200次/日,请改日重试 ≧ ﹏ ≦")
+			return
+		}
 		cqp.AddLog(20, "搜图异常", fmt.Sprintln(err))
 		sendMsg(group, qq, "搜图引擎运行异常,请稍后重试 ≧ ﹏ ≦")
 		return
