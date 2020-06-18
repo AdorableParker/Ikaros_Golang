@@ -192,34 +192,52 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 	switch msg[0] {
 	case "dbCM", "离线数据库", "连接数据库":
 		dbCM(msg[1:], msgID, fromGroup, fromQQ, 0)
+
 	case "calculato", "计算", "计算器":
 		calculato(msg[1:], msgID, fromGroup, fromQQ, 0)
+
 	case "training", "训练", "调教", "教学":
 		training(msg[1:], msgID, fromGroup, fromQQ, 0)
+
 	case "activity", "活动进度", "进度计算", "奖池计算":
 		activity(msg[1:], msgID, fromGroup, fromQQ, 0)
+
 	case "shipMap", "打捞定位":
 		shipMap(msg[1:], msgID, fromGroup, fromQQ, 0)
+
 	case "realName", "船名查询", "和谐名":
 		realName(msg[1:], msgID, fromGroup, fromQQ, 0)
+
 	case "construction", "建造时间查询", "建造时间", "建造查询":
 		construction(msg[1:], msgID, fromGroup, fromQQ, 0)
+
 	case "saucenao", "图片搜索", "搜图":
 		saucenao(msg[1:], msgID, fromGroup, fromQQ, 0)
-	case "help", "使用说明", "使用帮助", "帮助", "使用方法":
-		help(msg[1:], fromGroup, fromQQ)
-	case "equipmentRanking", "装备榜单", "装备榜", "装备排行榜":
-		equipmentRanking(fromGroup, fromQQ)
-	case "srengthRanking", "强度榜单", "强度榜", "舰娘强度榜", "舰娘排行榜":
-		srengthRanking(fromGroup, fromQQ)
-	case "pixivRanking", "社保榜", "射爆榜", "P站榜", "p站榜":
-		pixivRanking(fromGroup, fromQQ)
+
+	case "dynamicByID", "B站动态":
+		dynamicByID(msg[1:], msgID, fromGroup, fromQQ, 0)
+
 	case "小加加", "火星加", "B博更新", "b博更新":
 		sendDynamic(msg[1:], fromGroup, fromQQ, 233114659)
+
 	case "转推姬", "碧蓝日推":
 		sendDynamic(msg[1:], fromGroup, fromQQ, 300123440)
+
 	case "罗德岛线报", "方舟公告", "方舟B博", "阿米娅":
 		sendDynamic(msg[1:], fromGroup, fromQQ, 161775300)
+
+	case "help", "使用说明", "使用帮助", "帮助", "使用方法":
+		help(msg[1:], fromGroup, fromQQ)
+
+	case "equipmentRanking", "装备榜单", "装备榜", "装备排行榜":
+		equipmentRanking(fromGroup, fromQQ)
+
+	case "srengthRanking", "强度榜单", "强度榜", "舰娘强度榜", "舰娘排行榜":
+		srengthRanking(fromGroup, fromQQ)
+
+	case "pixivRanking", "社保榜", "射爆榜", "P站榜", "p站榜":
+		pixivRanking(fromGroup, fromQQ)
+
 	case "伊卡洛斯":
 		words := strings.Join(msg[1:], " ") // 拼接字符串
 		tuling(words, fromGroup, fromQQ, true)
