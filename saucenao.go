@@ -59,6 +59,7 @@ func saucenao(msg []string, msgID int32, group, qq int64, try uint8) {
 	}
 	sendMsg(group, qq, "引擎初始化完成, 开始搜图")
 	response, err := Client.FromFile(fileDir)
+	defer os.Remove(fileDir)
 	if err != nil {
 		if strings.Contains(err.Error(), "Daily Search Limit Exceeded.") {
 			cqp.AddLog(20, "搜图异常", "查询次数超限")
@@ -119,5 +120,4 @@ func saucenao(msg []string, msgID int32, group, qq int64, try uint8) {
 		text = "服务器返回的是被隐藏的低相似度结果\n(ノω<。)ノ"
 	}
 	sendMsg(group, qq, text)
-	os.Remove(fileDir)
 }
