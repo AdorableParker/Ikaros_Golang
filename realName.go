@@ -44,7 +44,8 @@ func realName(msg []string, msgID int32, group, qq int64, try uint8) {
 
 	// 格式化输出
 	if len(rosters) == 0 {
-		sendMsg(group, qq, "名字中包含有 %s 的舰船未收录")
+		sendMsg(group, qq, fmt.Sprintf("名字中包含有 %s 的舰船未收录", index))
+		return
 	}
 	var str string = fmt.Sprintf("名字中包含有 %s 的舰船有:", index)
 	for _, object := range rosters {
