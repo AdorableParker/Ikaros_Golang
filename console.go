@@ -24,6 +24,7 @@ type groupInfo struct {
 	Arknights   uint8 `gorm:"column:Arknights"`
 	SaraNews    uint8 `gorm:"column:Sara_news"`
 	JavelinNews uint8 `gorm:"column:Javelin_news"`
+	FateGrandOrder uint8 `gorm:"column:FateGrandOrder"`
 
 	// 报时
 	CallBell   uint8 `gorm:"column:Call_bell"`
@@ -92,6 +93,22 @@ func arknightsAlter(group int64) {
 	db.Table("group_info").Where("group_id = ?", group).First(&g)
 	db.Table("group_info").Where("group_id = ?", group).Update("Arknights", 1^g.Arknights)
 	cqp.SendGroupMsg(group, fmt.Sprintf("明日方舟　B站动态订阅原状态为 %t\n现状态已改为 %t", real[g.Arknights], real[1^g.Arknights]))
+}
+
+func fgoAlter(group int64) {
+	var g groupInfo
+	// 链接数据库
+	db, err := gorm.Open("sqlite3", Datedir)
+	defer db.Close()
+	if err != nil {
+		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
+		cqp.SendGroupMsg(group, "数据库连接异常\n×_×")
+		return
+	}
+	// 查询数据库
+	db.Table("group_info").Where("group_id = ?", group).First(&g)
+	db.Table("group_info").Where("group_id = ?", group).Update("FateGrandOrder", 1^g.FateGrandOrder)
+	cqp.SendGroupMsg(group, fmt.Sprintf("命运－冠位指定 B站动态订阅原状态为 %t\n现状态已改为 %t", real[g.FateGrandOrder], real[1^g.FateGrandOrder]))
 }
 
 func saraNewsAlter(group int64) {

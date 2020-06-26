@@ -56,11 +56,22 @@ func updateCheckTask() {
 				cqp.SendGroupMsg(checkGroup.GroupID, msg)
 			}
 		}
+
 		// B站明日方舟
 		msg, ok = updateCheckt(161775300)
 		if ok {
 			// 查询数据库
 			db.Table("group_info").Select("group_id").Where("Arknights = ?", "1.0").Find(&checkList)
+			for _, checkGroup := range checkList {
+				cqp.SendGroupMsg(checkGroup.GroupID, msg)
+			}
+		}
+
+		// B站FGO
+		msg, ok = updateCheckt(233108841)
+		if ok {
+			// 查询数据库
+			db.Table("group_info").Select("group_id").Where("FateGrandOrder = ?", "1.0").Find(&checkList)
 			for _, checkGroup := range checkList {
 				cqp.SendGroupMsg(checkGroup.GroupID, msg)
 			}

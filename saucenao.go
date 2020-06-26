@@ -53,9 +53,9 @@ func saucenao(msg []string, msgID int32, group, qq int64, try uint8) {
 		if err != nil {
 			cqp.AddLog(20, "初始化异常", fmt.Sprintln("搜图引擎初始化出现错误\n\v", err))
 			sendMsg(group, qq, "搜图引擎初始化异常,请联系维护 ≧ ﹏ ≦")
-		} else {
-			SauceNAO = true
+			return
 		}
+		SauceNAO = true
 	}
 	sendMsg(group, qq, "引擎初始化完成, 开始搜图")
 	response, err := Client.FromFile(fileDir)
@@ -76,45 +76,46 @@ func saucenao(msg []string, msgID int32, group, qq int64, try uint8) {
 		sendMsg(group, qq, "没有找到符合标准的结果 ≧ ﹏ ≦")
 		return
 	}
-	similarity := first.Header.Similarity // 相似度
-	thumbnail := first.Header.Thumbnail   // 缩略信息
-	var text = "%s\n结果来自于 %s\n%s ID:\t%d\n相似度:\t%s%%\n缩略信息:%s"
+	similarity := first.Header.Similarity            // 相似度
+	thumbnail := first.Header.Thumbnail              // 缩略信息
+	RemainingQuotas := response.Header.LongRemaining // 剩余配额
+	var text = "%s\n结果来自于 %s\n%s ID:\t%d\n相似度:\t%s%%\n缩略信息:%s\n24小时内剩余可查询次数: %d"
 	switch {
 	case first.IsPixiv():
 		pixivID := first.Data.PixivID
-		text = fmt.Sprintf(text, title, "Pixiv", "Pixiv", pixivID, similarity, thumbnail)
+		text = fmt.Sprintf(text, title, "Pixiv", "Pixiv", pixivID, similarity, thumbnail, RemainingQuotas)
 
 	case first.IsIMDb():
 		imdbID := first.Data.IMDbID
-		text = fmt.Sprintf(text, title, "IMDb", "IMDb", imdbID, similarity, thumbnail)
+		text = fmt.Sprintf(text, title, "IMDb", "IMDb", imdbID, similarity, thumbnail, RemainingQuotas)
 
 	case first.IsDeviantArt():
 		deviantartID := first.Data.DeviantArtID
-		text = fmt.Sprintf(text, title, "DeviantArt", "DeviantArt", deviantartID, similarity, thumbnail)
+		text = fmt.Sprintf(text, title, "DeviantArt", "DeviantArt", deviantartID, similarity, thumbnail, RemainingQuotas)
 
 	case first.IsBcy():
 		bcyID := first.Data.BcyID
-		text = fmt.Sprintf(text, title, "Bcy", "Bcy", bcyID, similarity, thumbnail)
+		text = fmt.Sprintf(text, title, "Bcy", "Bcy", bcyID, similarity, thumbnail, RemainingQuotas)
 
 	case first.IsAniDB():
 		anidbaID := first.Data.AniDBAID
-		text = fmt.Sprintf(text, title, "AniDBA", "AniDBA", anidbaID, similarity, thumbnail)
+		text = fmt.Sprintf(text, title, "AniDBA", "AniDBA", anidbaID, similarity, thumbnail, RemainingQuotas)
 
 	case first.IsPawoo():
 		pawooID := first.Data.PawooID
-		text = fmt.Sprintf(text, title, "Pawoo", "Pawoo", pawooID, similarity, thumbnail)
+		text = fmt.Sprintf(text, title, "Pawoo", "Pawoo", pawooID, similarity, thumbnail, RemainingQuotas)
 
 	case first.IsSeiga():
 		seigaID := first.Data.SeigaID
-		text = fmt.Sprintf(text, title, "Seiga", "Seiga", seigaID, similarity, thumbnail)
+		text = fmt.Sprintf(text, title, "Seiga", "Seiga", seigaID, similarity, thumbnail, RemainingQuotas)
 
 	case first.IsSankaku():
 		sankakuID := first.Data.SankakuID
-		text = fmt.Sprintf(text, title, "Sankaku", "Sankaku", sankakuID, similarity, thumbnail)
+		text = fmt.Sprintf(text, title, "Sankaku", "Sankaku", sankakuID, similarity, thumbnail, RemainingQuotas)
 
 	case first.IsDanbooru():
 		danbooruID := first.Data.DanbooruID
-		text = fmt.Sprintf(text, title, "Danbooru", "Danbooru", danbooruID, similarity, thumbnail)
+		text = fmt.Sprintf(text, title, "Danbooru", "Danbooru", danbooruID, similarity, thumbnail, RemainingQuotas)
 	default:
 		// text = fmt.Sprintf("%+v\n", first)
 		text = "服务器返回的是被隐藏的低相似度结果\n(ノω<。)ノ"

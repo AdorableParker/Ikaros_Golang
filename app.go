@@ -226,6 +226,9 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 	case "罗德岛线报", "方舟公告", "方舟B博", "阿米娅":
 		sendDynamic(msg[1:], fromGroup, fromQQ, 161775300)
 
+	case "月球人公告", "FGO公告", "呆毛王":
+		sendDynamic(msg[1:], fromGroup, fromQQ, 233108841)
+
 	case "help", "使用说明", "使用帮助", "帮助", "使用方法":
 		help(msg[1:], fromGroup, fromQQ)
 
@@ -272,6 +275,8 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 					javelinNewsAlter(fromGroup)
 				case "改变罗德岛线报订阅状态":
 					arknightsAlter(fromGroup)
+				case "改变FGO订阅状态":
+					fgoAlter(fromGroup)
 				case "改变开火许可状态":
 					fireAlter(fromGroup)
 				case "改变复读姬状态":
