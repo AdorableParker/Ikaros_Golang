@@ -11,6 +11,5 @@ require (
 	github.com/jozsefsallai/gophersauce v1.0.1
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
 	github.com/yanyiwu/gojieba v1.1.2
-	google.golang.org/appengine v1.6.6 // indirect
 	gopkg.in/ini.v1 v1.57.0
 )
