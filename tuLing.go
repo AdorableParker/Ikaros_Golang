@@ -42,7 +42,7 @@ func tuling(msg string, group, qq int64, flag bool) {
 	for _, word := range compareSources {
 		source.Add(word)
 	}
-
+	// cqp.AddLog(0, "测试信息", fmt.Sprintf("测试信息:%v", source))
 	if !DBConn {
 		if flag {
 			sendMsg(group, qq, "数据库离线状态")
@@ -61,7 +61,7 @@ func tuling(msg string, group, qq int64, flag bool) {
 	for _, i := range wordinfos { // 第一次 关键词索引寻找
 		// 查询数据库
 		db.Table("universal_corpus").Select("answer, question").Where("keys = ?", i.Word).Find(&ai)
-		answerList := filter(ai, source, 0.8)
+		answerList := filter(ai, source, 0.5) // 评分
 
 		numAanswers := len(answerList)
 		if numAanswers != 0 {
@@ -72,7 +72,7 @@ func tuling(msg string, group, qq int64, flag bool) {
 	}
 
 	db.Table("universal_corpus").Select("answer, question").Where("question = ?", msg).Find(&ai)
-	answerList := filter(ai, source, 0.85)
+	answerList := filter(ai, source, 0.75) // 评分
 	numAanswers := len(answerList)
 	if numAanswers != 0 {
 		rand.Seed(time.Now().UnixNano())
@@ -97,7 +97,7 @@ func filter(ai []aiQA, source mapset.Set, maxScore float32) []string {
 			contrast.Add(word)
 		}
 		score := float32(source.Intersect(contrast).Cardinality()) / float32(source.Union(contrast).Cardinality())
-		// cqp.AddLog(0, "测试信息", fmt.Sprintf("测试信息:%v\n%v\n%v\n%v", score, words, q, a))
+		// cqp.AddLog(0, "测试信息", fmt.Sprintf("测试信息:%v\n%v\n%v\n%v", score, contrast, q, a))
 		switch {
 		case score > maxScore:
 			maxScore = score
