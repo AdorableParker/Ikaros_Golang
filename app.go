@@ -125,6 +125,7 @@ func onGroupMsg(subType, msgID int32, fromGroup, fromQQ int64, fromAnonymous, ms
 		cqp.AddLog(0, "初始化中", "初始化完成前不处理消息")
 		return 0
 	}
+	// cqp.AddLog(0, "t", fmt.Sprintln("msgid:", msgID))
 
 	if atForMe(msg) {
 		tuling(strings.Join(strings.Split(msg, atMe), ""), fromGroup, fromQQ, true)
@@ -149,7 +150,9 @@ func onGroupMsg(subType, msgID int32, fromGroup, fromQQ int64, fromAnonymous, ms
 
 func parser(msgID int32, fromGroup, fromQQ int64, msg string) (ok bool) {
 	instructionPacket := strings.Fields(msg) // 解析消息
-	for i, s := range stagedSessionPool {    // 在会话池里面查找符合标志的
+	// cqp.AddLog(0, "t", fmt.Sprintln("poll:", stagedSessionPool))
+	for i, s := range stagedSessionPool { // 在会话池里面查找符合标志的
+		// cqp.AddLog(0, "t", fmt.Sprintln(i, s, fromGroup, fromQQ))
 		if s.Group == fromGroup && s.QQ == fromQQ { // 存在会话任务
 			if strings.Contains(msg, "算了") || strings.Contains(msg, "不用了") || strings.Contains(msg, "不搜了") || strings.Contains(msg, "不查了") {
 				delete(stagedSessionPool, i) // 删除掉这个会话任务
