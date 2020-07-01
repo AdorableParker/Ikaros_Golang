@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/Tnze/CoolQ-Golang-SDK/cqp"
 	"github.com/buger/jsonparser"
@@ -60,9 +61,10 @@ func sendDynamic(tomsg []string, group, qq int64, id int) {
 			sendMsg(group, qq, "未来的事情我怎么会知道\n=￣ω￣=")
 		}
 	}
-	_, msg, img := getDynamic(id, pages, false)
+	timeStamp, msg, img := getDynamic(id, pages, false)
+	var endResult string
+	var newmsg string
 	if img != nil {
-		var newmsg string
 		// cqp.AddLog(0, "测试文本", fmt.Sprintf("图片列表:%v", img))
 		if cqp.CanSendImage() {
 			newmsg = msg + "\n附图：\n[CQ:image,file=" + strings.Join(img, "]\n[CQ:image,file=") + "]"
@@ -70,10 +72,17 @@ func sendDynamic(tomsg []string, group, qq int64, id int) {
 			newmsg = msg + "\n附图：\n" + strings.Join(img, "\n")
 			// cqp.AddLog(0, "测试文本", fmt.Sprintf("输出:%v", newmsg))
 		}
-		sendMsg(group, qq, newmsg)
-		return
+	} else {
+		newmsg = msg
 	}
-	sendMsg(group, qq, msg)
+
+	if timeStamp > 0 {
+		timeString := time.Unix(timeStamp, 0).Format("2006-01-02 15:04:05")
+		endResult = fmt.Sprintf("%s\n发布时间: %s", newmsg, timeString)
+	} else {
+		endResult = newmsg
+	}
+	sendMsg(group, qq, endResult)
 }
 
 func getDynamic(id, pages int, flag bool) (int64, string, []string) {
