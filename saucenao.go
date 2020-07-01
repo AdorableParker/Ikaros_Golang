@@ -36,6 +36,7 @@ func saucenao(msg []string, msgID int32, group, qq int64, try uint8) {
 		if try <= 3 { // 如果已尝试次数不超过3次
 			sendMsg(group, qq, "没有收到图片哦,再发一次吧\n(。・ω・。)")                               // 发送提示消息
 			stagedSessionPool[msgID] = newStagedSession(group, qq, saucenao, msg, try) // 添加新的会话到会话池
+			// cqp.AddLog(0,"t",fmt.Sprintln(stagedSessionPool))
 		} else {
 			sendMsg(group, qq, "错误次数太多了哦,先看看使用说明吧\n(。・ω・。)") // 发送提示消息
 		}
