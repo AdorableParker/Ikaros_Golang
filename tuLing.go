@@ -61,7 +61,7 @@ func tuling(msg string, group, qq int64, flag bool) {
 	for _, i := range wordinfos { // 第一次 关键词索引寻找
 		// 查询数据库
 		db.Table("universal_corpus").Select("answer, question").Where("keys = ?", i.Word).Find(&ai)
-		answerList := filter(ai, source, 0.5) // 评分
+		answerList := filter(ai, source, 0.65) // 评分
 
 		numAanswers := len(answerList)
 		if numAanswers != 0 {

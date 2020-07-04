@@ -133,18 +133,17 @@ func onGroupMsg(subType, msgID int32, fromGroup, fromQQ int64, fromAnonymous, ms
 	}
 	ok := parser(msgID, fromGroup, fromQQ, msg)
 	if !ok {
-		if strings.Contains(msg, "射爆") {
-			if fire(fromGroup, fromQQ) {
+			if autoTrigger(fromGroup) {
+				rand.Seed(time.Now().UnixNano())
+				if rand.Intn(10) <= 2 {
+					tuling(msg, fromGroup, fromQQ, false)
+					return 0
+				}
 				return 0
 			}
+			repeater(msg, fromGroup)
 		}
-		rand.Seed(time.Now().UnixNano())
-		if rand.Intn(10) <= 2 {
-			tuling(msg, fromGroup, fromQQ, false)
-			return 0
-		}
-		repeater(msg, fromGroup)
-	}
+
 	return 0
 }
 
@@ -280,7 +279,7 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 					arknightsAlter(fromGroup)
 				case "改变FGO订阅状态":
 					fgoAlter(fromGroup)
-				case "改变开火许可状态":
+				case "改变主动对话许可状态":
 					fireAlter(fromGroup)
 				case "改变复读姬状态":
 					repeatAlter(fromGroup)

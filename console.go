@@ -17,13 +17,13 @@ type groupInfo struct {
 	ID      int   `gorm:"column:id"`
 	GroupID int64 `gorm:"column:group_id"`
 
-	Repeat uint8 `gorm:"column:repeat"` // 复读
-	Fire   uint8 `gorm:"column:fire"`   // 开火限制
+	Repeat      uint8 `gorm:"column:repeat"`      // 复读
+	AutoTrigger uint8 `gorm:"column:autoTrigger"` // 开火限制
 
 	// 动态更新
-	Arknights   uint8 `gorm:"column:Arknights"`
-	SaraNews    uint8 `gorm:"column:Sara_news"`
-	JavelinNews uint8 `gorm:"column:Javelin_news"`
+	Arknights      uint8 `gorm:"column:Arknights"`
+	SaraNews       uint8 `gorm:"column:Sara_news"`
+	JavelinNews    uint8 `gorm:"column:Javelin_news"`
 	FateGrandOrder uint8 `gorm:"column:FateGrandOrder"`
 
 	// 报时
@@ -59,8 +59,8 @@ func fireAlter(group int64) {
 	}
 	// 查询数据库
 	db.Table("group_info").Where("group_id = ?", group).First(&g)
-	db.Table("group_info").Where("group_id = ?", group).Update("fire", 1^g.Fire)
-	cqp.SendGroupMsg(group, fmt.Sprintf("开火禁令原状态为 %t\n现状态已改为 %t", real[g.Fire], real[1^g.Fire]))
+	db.Table("group_info").Where("group_id = ?", group).Update("autoTrigger", 1^g.AutoTrigger)
+	cqp.SendGroupMsg(group, fmt.Sprintf("主动对话原状态为 %t\n现状态已改为 %t", real[g.AutoTrigger], real[1^g.AutoTrigger]))
 }
 
 func repeatAlter(group int64) {
@@ -285,26 +285,20 @@ func repeater(msg string, group int64) {
 	}
 }
 
-func fire(group, qq int64) bool {
+func autoTrigger(group int64) bool {
 	var g groupInfo
 	db, err := gorm.Open("sqlite3", Datedir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
-		cqp.SendGroupMsg(group, "数据库连接异常\n×_×")
 		return true
 	}
 	// 查询数据库
 	db.Table("group_info").Where("group_id = ?", group).First(&g)
-	if g.Fire == 1 {
-		if qq == 798864550 {
-			cqp.SendGroupMsg(group, "I!YUTO!TM BURST-FORTH !")
-			return false
-		}
-		cqp.SendGroupMsg(group, "你涉嫌无证射爆，请立刻中止行为，接受检查!!")
-		return false
+	if g.AutoTrigger == 1 {
+		return true
 	}
-	return true
+	return false
 }
 
 var nmcm = [...]string{"欢迎新人,能表演一下退群吗",
