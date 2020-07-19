@@ -3,7 +3,6 @@
 [![GitHub issues](https://img.shields.io/github/issues/AdorableParker/Ikaros_Golang?style=plastic)](https://github.com/AdorableParker/Ikaros_Golang/issues)
 [![GitHub stars](https://img.shields.io/github/stars/AdorableParker/Ikaros_Golang)](https://github.com/AdorableParker/Ikaros_Golang/stargazers)
 [![GitHub license](https://img.shields.io/github/license/AdorableParker/Ikaros_Golang?style=plastic)](https://github.com/AdorableParker/Ikaros_Golang/blob/master/LICENSE)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/AdorableParker/Ikaros_Golang?style=plastic)
 ![GitHub last commit](https://img.shields.io/github/last-commit/AdorableParker/Ikaros_Golang?style=plastic)
 
 自用QQ机器人伊卡洛斯的Golang版本
@@ -50,6 +49,7 @@
 * 碧蓝航线的打捞地点查询
     > 由于游戏更新，一样需要时不时的往数据库添加数据
 * 碧蓝航线的活动计算器
+* 碧蓝航线的舰船经验计算器
 * 智障聊天
     > ~~我仍不知道gojieba报错的原因~~问题大概解决了，是该死的初始化时长太久的问题
 * 自助禁言
