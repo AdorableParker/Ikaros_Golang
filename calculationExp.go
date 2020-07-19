@@ -6,17 +6,17 @@ import (
 )
 
 type lv2Exp struct {
-	Lv          int `json:"lv,omitempty"`
-	Coefficient int `json:"coefficient,omitempty"`
+	Lv          int
+	Coefficient int
 }
 
 var expList []lv2Exp = []lv2Exp{
-	lv2Exp{40, 1}, lv2Exp{60, 2}, lv2Exp{70, 3},
-	lv2Exp{80, 4}, lv2Exp{90, 5}, lv2Exp{92, 10},
-	lv2Exp{94, 20}, lv2Exp{95, 40}, lv2Exp{97, 50},
-	lv2Exp{98, 200}, lv2Exp{99, 720}, lv2Exp{100, -620},
-	lv2Exp{104, 20}, lv2Exp{105, 70}, lv2Exp{110, 120},
-	lv2Exp{115, 180}, lv2Exp{119, 210}, lv2Exp{120, 0}}
+	{40, 1}, {60, 2}, {70, 3},
+	{80, 4}, {90, 5}, {92, 10},
+	{94, 20}, {95, 40}, {97, 50},
+	{98, 200}, {99, 720}, {100, -620},
+	{104, 20}, {105, 70}, {110, 120},
+	{115, 180}, {119, 210}, {120, 0}}
 
 func calculateParts(lowLv, highLv, existing int, flag bool) (totalExp int) {
 	for ; lowLv < highLv; lowLv++ {
