@@ -159,6 +159,7 @@ func parser(msgID int32, fromGroup, fromQQ int64, msg string) (ok bool) {
 				return true
 			}
 			fun := *(s.Function)                                           // 获取功能函数对象
+			instructionPacket = append(s.Parameter, instructionPacket...)  // 拼接参数
 			fun(instructionPacket, msgID, s.Group, s.QQ, s.TryOpportunity) // 执行功能
 			delete(stagedSessionPool, i)                                   // 删除掉这个会话任务
 			return true
@@ -192,6 +193,9 @@ func sendMsg(group, qq int64, msg string) {
 
 func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 	switch msg[0] {
+	case "舰船经验","经验计算":
+		calculationExp(msg[1:], msgID, fromGroup, fromQQ, 0)
+
 	case "dbCM", "离线数据库", "连接数据库":
 		dbCM(msg[1:], msgID, fromGroup, fromQQ, 0)
 
