@@ -29,5 +29,5 @@ func dbCM(msg []string, msgID int32, group, qq int64, try uint8) {
 }
 
 func getCheckCode() string {
-	return fmt.Sprintf("%x",md5.Sum([]byte(time.Now().String())))
+	return fmt.Sprintf("%x", md5.Sum([]byte(time.Now().String())))
 }

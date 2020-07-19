@@ -133,16 +133,16 @@ func onGroupMsg(subType, msgID int32, fromGroup, fromQQ int64, fromAnonymous, ms
 	}
 	ok := parser(msgID, fromGroup, fromQQ, msg)
 	if !ok {
-			if autoTrigger(fromGroup) {
-				rand.Seed(time.Now().UnixNano())
-				if rand.Intn(10) <= 2 {
-					tuling(msg, fromGroup, fromQQ, false)
-					return 0
-				}
+		if autoTrigger(fromGroup) {
+			rand.Seed(time.Now().UnixNano())
+			if rand.Intn(10) <= 2 {
+				tuling(msg, fromGroup, fromQQ, false)
 				return 0
 			}
-			repeater(msg, fromGroup)
+			return 0
 		}
+		repeater(msg, fromGroup)
+	}
 
 	return 0
 }
@@ -193,7 +193,7 @@ func sendMsg(group, qq int64, msg string) {
 
 func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 	switch msg[0] {
-	case "舰船经验","经验计算":
+	case "calculationExp", "舰船经验", "经验计算":
 		calculationExp(msg[1:], msgID, fromGroup, fromQQ, 0)
 
 	case "dbCM", "离线数据库", "连接数据库":

@@ -81,7 +81,7 @@ func callBellTask() {
 		calibrationCountdown++ // 计数增加
 		if flag {
 			flag = false
-			time.Sleep(time.Now().Truncate(time.Hour).Add(time.Hour).Sub(time.Now()))  // 虽然看起来很长,但是功能就是等待到下一个整点而已
+			time.Sleep(time.Now().Truncate(time.Hour).Add(time.Hour).Sub(time.Now())) // 虽然看起来很长,但是功能就是等待到下一个整点而已
 		} else {
 			time.Sleep(time.Hour) // 一小时后继续
 		}
