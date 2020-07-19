@@ -235,6 +235,9 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 	case "月球人公告", "FGO公告", "呆毛王":
 		sendDynamic(msg[1:], fromGroup, fromQQ, 233108841)
 
+	case "伊卡洛斯项目地址":
+		sendMsg(fromGroup, fromQQ, "项目地址: https://adorableparker.github.io/Ikaros_Golang/\n欢迎前来送star、造轮子、提issues")
+
 	case "help", "使用说明", "使用帮助", "帮助", "使用方法":
 		help(msg[1:], fromGroup, fromQQ)
 
