@@ -216,7 +216,7 @@ func calculation(input string) (output float64, err error) {
 			flag = true
 
 		default: // 其他字符
-			return 0, fmt.Errorf("意外的 %q,\"%s\" 不是合法的算数运算符", i, input)
+			return 0, fmt.Errorf("意外的 %q,\"%s\" 不是合法算式", i, input)
 		}
 	}
 
