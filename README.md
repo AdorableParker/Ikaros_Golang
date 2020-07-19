@@ -2,8 +2,7 @@
 
 [![GitHub issues](https://img.shields.io/github/issues/AdorableParker/Ikaros_Golang?style=plastic)](https://github.com/AdorableParker/Ikaros_Golang/issues)
 [![GitHub stars](https://img.shields.io/github/stars/AdorableParker/Ikaros_Golang)](https://github.com/AdorableParker/Ikaros_Golang/stargazers)
-[![GitHub license](https://img.shields.io/github/license/AdorableParker/Ikaros__Golang?style=plastic)](https://github.com/AdorableParker/Ikaros_Golang/blob/master/LICENSE)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/AdorableParker/Ikaros_Golang?style=plastic)
+[![GitHub license](https://img.shields.io/github/license/AdorableParker/Ikaros_Golang?style=plastic)](https://github.com/AdorableParker/Ikaros_Golang/blob/master/LICENSE)
 ![GitHub last commit](https://img.shields.io/github/last-commit/AdorableParker/Ikaros_Golang?style=plastic)
 
 自用QQ机器人伊卡洛斯的Golang版本
