@@ -104,6 +104,7 @@ func calculationExp(msg []string, msgID int32, group, qq int64, try uint8) {
 	balance := calculateParts(lowLv, highLv, existingExp, shipType)
 	if balance <= 0 {
 		sendMsg(group, qq, fmt.Sprintf("当前等级:%d,目标等级:%d\n是否为决战方案:%t\n已有经验:%d\n最终计算结果: 达成目标等级后将溢出 %d EXP", lowLv, highLv, shipType, existingExp, -balance)) // 发送提示消息
+		return
 	}
 	sendMsg(group, qq, fmt.Sprintf("当前等级:%d,目标等级:%d\n是否为决战方案:%t\n已有经验:%d\n最终计算结果: 还需 %d EXP 可以达成目标等级", lowLv, highLv, shipType, existingExp, balance)) // 发送提示消息
 }
