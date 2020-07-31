@@ -1,4 +1,5 @@
 #Jekyll configuration
+
 # Build settings
 makedown: GFM
 theme: jekyll-theme-midnight
