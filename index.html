@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Ikaros golang by AdorableParker</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Ikaros golang</h1>
+        <h2>自用QQ机器人伊卡洛斯的Golang版本</h2>
+        <a href="https://github.com/AdorableParker/Ikaros_Golang" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="ikaros_golang" class="anchor" href="#ikaros_golang" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ikaros_Golang</h1>
+<p><img src="https://img.shields.io/github/issues/AdorableParker/Ikaros_Golang?style=plastic" alt="GitHub issues">
+<a href="https://github.com/AdorableParker/Ikaros_Golang/stargazers"><img src="https://img.shields.io/github/stars/AdorableParker/Ikaros_Golang" alt="GitHub stars"></a>
+<a href="https://github.com/AdorableParker/Ikaros_Golang/blob/master/LICENSE"><img src="https://img.shields.io/github/license/AdorableParker/Ikaros_Golang?style=plastic" alt="GitHub license"></a>
+<img src="https://img.shields.io/github/last-commit/AdorableParker/Ikaros_Golang?style=plastic" alt="GitHub last commit"></p>
+<p>自用QQ机器人伊卡洛斯的Golang版本</p>
+<p>因为Python太慢，所以从Python版本迁移过来</p>
+<p>这个语言版本不知道我能坚持维护多久，说起来Python前前后后也更新了2年了...</p>
+<p><del>另外，因为gojieba库的编译报错问题，也不知道是我做错了什么，或许哪天实在忍不了了会转C++</del></p>
+<h2>
+<a id="如何使用" class="anchor" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>如何使用</h2>
+<p>如果只是想直接用的话:</p>
+<ol>
+<li>下载<code>app.dll</code>和<code>app.json</code>文件</li>
+<li>打开 Cool Q 的开发者模式</li>
+<li>把<code>app.dll</code>和<code>app.json</code>放到<code>..\dev\com.adorableparker.github.ikaros_golang</code>目录下</li>
+<li>下载<code>nfiguration_data</code>文件夹里面的文件</li>
+<li>放置到<code>..\data\app\com.adorableparker.github.ikaros_golang</code>目录下</li>
+</ol>
+<hr>
+<p>如果是改写了代码想自己编译:</p>
+<ol>
+<li>
+<p>运行<code>build.bat</code>来进行编译生成<code>app.dll</code>和<code>app.json</code></p>
+</li>
+<li>
+<p>然后从上面的第2步开始操作，就可以了</p>
+<blockquote>
+<p><code>app.json</code>应该会要根据你的修改稍微改改内容，具体的修改请参考SDK文档</p>
+<p><code>https://pkg.go.dev/github.com/Tnze/CoolQ-Golang-SDK/cqp?tab=doc</code></p>
+</blockquote>
+</li>
+</ol>
+<h2>
+<a id="目前功能有" class="anchor" href="#%E7%9B%AE%E5%89%8D%E5%8A%9F%E8%83%BD%E6%9C%89" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>目前功能有</h2>
+<ul>
+<li>基于saucenao的搜图</li>
+<li>主动查询bilibili的动态更新
+<blockquote>
+<p>通过封装好的快捷查询命令或者输入指定UID来查询</p>
+</blockquote>
+</li>
+<li>自动检测bilibili的动态更新并推送
+<blockquote>
+<p>只写了<code>碧蓝航线</code>、<code>火星bot小黄瓜</code>和<code>明日方舟</code>的</p>
+<blockquote>
+<p><em><code>V.d647584</code></em> 追加了<code>命运-冠位指定</code></p>
+</blockquote>
+</blockquote>
+</li>
+<li>碧蓝航线的建造时间查询
+<blockquote>
+<p>由于游戏更新，需要时不时的往数据库添加数据</p>
+</blockquote>
+</li>
+<li>碧蓝航线的打捞地点查询
+<blockquote>
+<p>由于游戏更新，一样需要时不时的往数据库添加数据</p>
+</blockquote>
+</li>
+<li>碧蓝航线的活动计算器</li>
+<li>碧蓝航线的舰船经验计算器</li>
+<li>智障聊天
+<blockquote>
+<p><del>我仍不知道gojieba报错的原因</del>问题大概解决了，是该死的初始化时长太久的问题</p>
+</blockquote>
+</li>
+<li>自助禁言
+<blockquote>
+<p>解放管理员的双手，让闲的蛋疼的群员自己解决自闭问题</p>
+</blockquote>
+</li>
+<li>碧蓝航线的Wiki榜单图片爬取
+<blockquote>
+<p>只爬取了<code>装备排行榜</code>、<code>P站榜</code>和<code>PVE节奏版</code></p>
+</blockquote>
+</li>
+<li>整点报时
+<blockquote>
+<p>花了些功夫去搞舰C的台词呢</p>
+</blockquote>
+</li>
+<li>游戏每日提醒
+<blockquote>
+<p><code>每日</code>.tg 的 <code>每日</code>.nz 提醒</p>
+</blockquote>
+</li>
+<li>船名查询
+<blockquote>
+<p>就是和谐名对照表了</p>
+</blockquote>
+</li>
+<li>计算器
+<blockquote>
+<p>数据结构的练习</p>
+</blockquote>
+</li>
+</ul>
+<h3>
+<a id="还有很多功能没有迁移不想写" class="anchor" href="#%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A%E5%8A%9F%E8%83%BD%E6%B2%A1%E6%9C%89%E8%BF%81%E7%A7%BB%E4%B8%8D%E6%83%B3%E5%86%99" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>还有很多功能没有迁移，不想写...</h3>
+<p><del>都2020年了，你是个成熟的IDE了，该学会自己把项目写好了.jpg</del></p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/AdorableParker/Ikaros_Golang/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/AdorableParker/Ikaros_Golang/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/AdorableParker/Ikaros_Golang"></a> is maintained by <a href="https://github.com/AdorableParker">AdorableParker</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
