@@ -7,7 +7,7 @@ require (
 	github.com/Tnze/CoolQ-Golang-SDK v1.2.1
 	github.com/buger/jsonparser v1.0.0
 	github.com/deckarep/golang-set v1.7.1
-	github.com/jinzhu/gorm v1.9.14
+	github.com/jinzhu/gorm v1.9.15
 	github.com/jozsefsallai/gophersauce v1.0.1
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
 	github.com/yanyiwu/gojieba v1.1.2
