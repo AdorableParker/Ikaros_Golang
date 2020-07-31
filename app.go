@@ -10,6 +10,7 @@ import (
 
 	"github.com/Tnze/CoolQ-Golang-SDK/cqp"
 	"github.com/yanyiwu/gojieba"
+	"gopkg.in/ini.v1"
 )
 
 //go:generate cqcfg -c .
@@ -25,6 +26,11 @@ type stagedSession struct {
 	Function       *func([]string, int32, int64, int64, uint8) // 执行的命令函数
 	Parameter      []string                                    // 参数
 	TryOpportunity uint8                                       // 已尝试次数
+}
+
+type keyConf struct {
+	AdminAccount int64
+	SaucenaoKey  string
 }
 
 var stagedSessionPool = make(map[int32]*stagedSession, 30)
@@ -53,6 +59,12 @@ var LoadingFinished bool
 // DBConn 数据库连接控制标记
 var DBConn bool
 
+// AuthorizedGroupList 群申请授权名录
+var AuthorizedGroupList [5]int64
+
+// AdminConfig 关键配置项
+var AdminConfig = new(keyConf)
+
 func newStagedSession(group, qq int64, function func([]string, int32, int64, int64, uint8), parameter []string, try uint8) *stagedSession {
 	return &stagedSession{
 		Group:          group,     // 调用者所在群
@@ -72,7 +84,28 @@ func init() {
 	cqp.Enable = onEnable
 	cqp.Disable = onDisable
 	cqp.GroupMemberIncrease = onGroupMemberIncrease
+	cqp.GroupRequest = onGroupRequest
+}
 
+func onGroupRequest(subType, sendTime int32, fromGroup, fromQQ int64, msg, responseFlag string) int32 {
+	// subType 1: 加群请求 2: 被邀请入群
+	// sendTime 消息时间
+	// msg 验证问答,被邀请时为空
+	// responseFlag 请求回馈密钥
+	cqp.AddLog(0, "GroupRequest", fmt.Sprintln(subType, sendTime, fromGroup, fromQQ, msg, responseFlag))
+	if subType == 2 {
+		for i, authorizedgroup := range AuthorizedGroupList {
+			if authorizedgroup == fromGroup {
+				cqp.SetGroupAddRequest(responseFlag, subType, 1, "")
+				AuthorizedGroupList[i] = 0
+				// cqp.AddLog(0, "GroupRequest", "执行同意语句")
+				return 0
+			}
+		}
+		cqp.SetGroupAddRequest(responseFlag, subType, 2, "未授权的请求")
+		// cqp.AddLog(0, "GroupRequest", "执行拒绝语句")
+	}
+	return 0
 }
 
 func onEnable() int32 {
@@ -82,6 +115,12 @@ func onEnable() int32 {
 	Appdir = cqp.GetAppDir()
 	Datedir = filepath.Join(Appdir, "User.db")
 	atMe = fmt.Sprintf("[CQ:at,qq=%d]", cqp.GetLoginQQ())
+	err := ini.MapTo(AdminConfig, Appdir+"MainConf.ini")
+	if err != nil {
+		cqp.AddLog(10, "关键配置文件读取异常", fmt.Sprintln(err))
+		panic("关键配置文件读取异常")
+	}
+	// cqp.AddLog(0, "", fmt.Sprintln(AdminConfig))
 	// 每小时的 报时任务
 	wg.Add(1)
 	go callBellTask()
@@ -193,6 +232,9 @@ func sendMsg(group, qq int64, msg string) {
 
 func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 	switch msg[0] {
+	case "approveAuthorization", "授权批准":
+		approveAuthorization(msg[1:], msgID, fromGroup, fromQQ, 0)
+
 	case "calculationExp", "舰船经验", "经验计算":
 		calculationExp(msg[1:], msgID, fromGroup, fromQQ, 0)
 

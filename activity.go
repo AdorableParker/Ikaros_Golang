@@ -26,7 +26,7 @@ func activity(msg []string, msgID int32, group, qq int64, try uint8) {
 		}
 		return
 	}
-	cfg, err := ini.Load(Appdir + "config.ini")
+	cfg, err := ini.Load(Appdir + "activityConfig.ini")
 	if err != nil {
 		cqp.AddLog(10, "INI文件读取异常", fmt.Sprintln(err))
 		sendMsg(group, qq, "读取活动信息失败了\n/(ㄒoㄒ)/~~")

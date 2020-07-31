@@ -49,7 +49,7 @@ func saucenao(msg []string, msgID int32, group, qq int64, try uint8) {
 		var err error
 		Client, err = gophersauce.NewClient(&gophersauce.Settings{
 			APIUrl:     `https://saucenao.com/search.php`,
-			APIKey:     "1f3dc9e4d74dfcb83654bd58723d8adb877b68eb",
+			APIKey:     AdminConfig.SaucenaoKey,
 			MaxResults: 1})
 		if err != nil {
 			cqp.AddLog(20, "初始化异常", fmt.Sprintln("搜图引擎初始化出现错误\n\v", err))

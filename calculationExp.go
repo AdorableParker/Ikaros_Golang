@@ -48,6 +48,7 @@ func calculationExp(msg []string, msgID int32, group, qq int64, try uint8) {
 	var lowLv, highLv, existingExp int = 0, 0, 0
 	var shipType bool = false
 	var err error
+
 	switch len(msg) {
 	case 4:
 		existingExp, err = strconv.Atoi(msg[3])
@@ -74,11 +75,12 @@ func calculationExp(msg []string, msgID int32, group, qq int64, try uint8) {
 		}
 		if lowLv >= highLv {
 			sendMsg(group, qq, "你有问题,小老弟(¬_¬\")")
+			return
 		}
 
 	case 1:
 		try++         // 已尝试次数+1
-		if try <= 3 { // 如果已尝试次数不超过3次
+		if try <= 5 { // 如果已尝试次数不超过3次
 			sendMsg(group, qq, "再输入目标等级\nq(≧▽≦q)")
 			stagedSessionPool[msgID] = newStagedSession(group, qq, calculationExp, msg, try) // 添加新的会话到会话池
 		} else {
@@ -88,7 +90,7 @@ func calculationExp(msg []string, msgID int32, group, qq int64, try uint8) {
 
 	case 0: // 如果参数为0个
 		try++         // 已尝试次数+1
-		if try <= 3 { // 如果已尝试次数不超过3次
+		if try <= 5 { // 如果已尝试次数不超过3次
 			if try == 1 {
 				sendMsg(group, qq, "请输入当前等级\nq(≧▽≦q)")
 			} else {

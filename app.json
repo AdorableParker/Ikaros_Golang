@@ -42,14 +42,22 @@
 			"type": 103,
 			"priority": 20000,
 			"id": 7
+		},
+		{
+			"name": "加群请求／邀请",
+			"function": "EVENT_ON_GROUP_REQUEST",
+			"type": 302,
+			"priority": 20000,
+			"id": 9
 		}
 	],
 	"auth": [
-		101,
 		130,
 		123,
+		151,
 		106,
-		121
+		121,
+		101
 	],
 	"menu": [],
 	"status": []
