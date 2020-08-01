@@ -1,6 +1,0 @@
-#Jekyll configuration
-
-# Build settings
-makedown: GFM
-theme: jekyll-theme-architect
-highlighter: rouge
