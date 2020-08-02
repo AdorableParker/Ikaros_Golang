@@ -12,6 +12,12 @@ type roster struct {
 	Name string `gorm:"column:name"`
 }
 
+// DocRealName 日系舰船和谐名查询功能文档
+var DocRealName = &HelpDoc{
+	Name:    "日系舰船和谐名查询",
+	KeyWord: []string{"船名查询", "和谐名"},
+	Example: "船名查询 岛风"}
+
 func realName(msg []string, msgID int32, group, qq int64, try uint8) {
 
 	if len(msg) == 0 { // 如果没有获取到参数

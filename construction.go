@@ -35,6 +35,13 @@ func s2i(s string) int {
 	return h*60 + m
 }
 
+// DocConstruction 碧蓝航线建造时间查询功能文档
+var DocConstruction = &HelpDoc{
+	Name:        "碧蓝航线建造时间查询",
+	KeyWord:     []string{"建造时间查询", "建造时间", "建造查询"},
+	Example:     "建造时间 0:27\n建造时间 萨拉托加",
+	Description: "建造时间查询<空格><时间|船名>\n用于查询指定时间或是舰船的相关建造信息"}
+
 func construction(msg []string, msgID int32, group, qq int64, try uint8) {
 
 	if len(msg) == 0 { // 如果没有获取到参数

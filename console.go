@@ -47,6 +47,16 @@ type repeatInfo struct {
 
 var real = [2]bool{false, true}
 
+// DocConsole 控制台功能文档
+var DocConsole = &HelpDoc{
+	Name: "控制台",
+	KeyWord: []string{
+		"改变复读姬状态", "改变主动对话许可状态", "设定新入群禁言时间",
+		"改变火星时报订阅状态", "改变标枪快讯订阅状态", "改变罗德岛线报订阅状态",
+		"改变FGO订阅状态", "改变报时鸟状态", "改变报时鸟_舰C版状态",
+		"改变迎新功能状态", "改变每日提醒_舰B版功能状态", "改变每日提醒_FGO版功能状态"},
+	Description: "需群管理员以上权限才能触发"}
+
 func fireAlter(group int64) {
 	var g groupInfo
 	// 链接数据库

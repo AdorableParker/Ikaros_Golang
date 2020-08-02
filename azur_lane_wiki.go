@@ -8,6 +8,13 @@ import (
 	"github.com/Tnze/CoolQ-Golang-SDK/cqp"
 )
 
+// DocEquipmentRanking 碧蓝航线Wiki装备榜单查询功能文档
+var DocEquipmentRanking = &HelpDoc{
+	Name:        "碧蓝航线Wiki装备榜单查询",
+	KeyWord:     []string{"装备榜单", "装备榜", "装备排行榜"},
+	Description: "爬取碧蓝航线Wiki装备强度测评榜",
+}
+
 func equipmentRanking(group, qq int64) {
 	imgURL := getWikiImg("装备一图榜")
 	if imgURL != "" {
@@ -17,6 +24,13 @@ func equipmentRanking(group, qq int64) {
 	}
 }
 
+// DocSrengthRanking 碧蓝航线Wiki强度榜查询功能文档
+var DocSrengthRanking = &HelpDoc{
+	Name:        "碧蓝航线Wiki PVE用舰船综合性能强度榜查询",
+	KeyWord:     []string{"强度榜单", "强度榜", "舰娘强度榜", "舰娘排行榜"},
+	Description: "爬取碧蓝航线Wiki PVE用舰船综合性能强度榜",
+}
+
 func srengthRanking(group, qq int64) {
 	imgURL := getWikiImg("PVE用舰船综合性能强度榜")
 	if imgURL != "" {
@@ -24,6 +38,13 @@ func srengthRanking(group, qq int64) {
 	} else {
 		sendMsg(group, qq, "访问Wiki失败惹\nε(┬┬﹏┬┬)3")
 	}
+}
+
+// DocPixivRanking 碧蓝航线Wiki P站搜索结果一览榜查询功能文档
+var DocPixivRanking = &HelpDoc{
+	Name:        "碧蓝航线Wiki P站搜索结果一览榜查询",
+	KeyWord:     []string{"社保榜", "射爆榜", "P站榜", "p站榜"},
+	Description: "爬取碧蓝航线Wiki P站搜索结果一览榜",
 }
 
 func pixivRanking(group, qq int64) {

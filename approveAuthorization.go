@@ -6,6 +6,13 @@ import (
 	"github.com/Tnze/CoolQ-Golang-SDK/cqp"
 )
 
+// DocApproveAuthorization 受邀入群授权功能文档
+var DocApproveAuthorization = &HelpDoc{
+	Name:        "受邀入群授权",
+	KeyWord:     []string{"授权批准"},
+	Example:     "授权批准 123456789",
+	Description: "授权批准<空格><批准群号>\n用于批准同意受邀加群申请\n需要机器人系统管理员权限"}
+
 func approveAuthorization(msg []string, msgID int32, group, qq int64, try uint8) {
 	if qq != AdminConfig.AdminAccount {
 		sendMsg(group, qq, "非系统管理员,权限不足,授权失败")

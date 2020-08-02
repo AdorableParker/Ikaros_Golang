@@ -13,6 +13,25 @@ import (
 // Client SauceNAO 搜图引擎客户端
 var Client *gophersauce.Client
 
+// ,
+// 	"#以图搜图": `------img_saucenao------
+// 命令关键字: "saucenao", "图片搜索", "搜图"
+// 命令输入格式:
+
+// 图片搜索<空格><图片>
+// 例:
+// 搜图 [图片]
+
+// 效果: 根据输入的图片，使用saucenao搜图引擎进行图源搜索，返回相似度最高的。
+// ######################`
+
+// DocSaucenao 以图搜图功能文档
+var DocSaucenao = &HelpDoc{
+	Name:        "以图搜图",
+	KeyWord:     []string{"saucenao", "图片搜索", "搜图"},
+	Example:     "搜图 [图片]",
+	Description: "图片搜索<空格><图片>\n根据输入的图片,使用saucenao搜图引擎进行图源搜索,返回相似度最高的,部分被隐蔽的结果将会被抛弃\n支持的平台有:\nPixiv、IMDb、DeviantArt、Bcy、AniDBA、Pawoo、Seiga、Sankaku、Danbooru"}
+
 func saucenao(msg []string, msgID int32, group, qq int64, try uint8) {
 
 	if len(msg) == 0 { // 如果没有获取到参数

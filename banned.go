@@ -6,6 +6,13 @@ import (
 	"github.com/Tnze/CoolQ-Golang-SDK/cqp"
 )
 
+// DocBanned 快捷禁言功能文档
+var DocBanned = &HelpDoc{
+	Name:        "快捷禁言",
+	KeyWord:     []string{"求口", "自助禁言"},
+	Example:     "自助禁言 30",
+	Description: "求口<空格><时间分钟>\n用于满足群员自己禁言自己的需求,需要提供管理员权限"}
+
 func banned(msg []string, msgID int32, group, qq int64, try uint8) {
 	if len(msg) != 0 {
 		bantime, err := strconv.Atoi(msg[0])
@@ -24,6 +31,12 @@ func banned(msg []string, msgID int32, group, qq int64, try uint8) {
 	}
 }
 
+// DocAllBanned 全群禁言功能文档
+var DocAllBanned = &HelpDoc{
+	Name:        "全群禁言",
+	KeyWord:     []string{"全员禁言", "全员自闭"},
+	Description: "开启当前群的全员禁言,需要提供管理员权限"}
+
 func allBanned(group, qq int64) {
 	groupInfo := cqp.GetGroupMemberInfo(group, qq, false)
 	if groupInfo.Auth >= 2 {
@@ -32,6 +45,12 @@ func allBanned(group, qq int64) {
 		cqp.SendGroupMsg(group, "我才不听你的呢\n(￣﹃￣)")
 	}
 }
+
+// DocAllNotBanned 解除全群禁言功能文档
+var DocAllNotBanned = &HelpDoc{
+	Name:        "解除全群禁言",
+	KeyWord:     []string{"解禁"},
+	Description: "关闭当前群的全员禁言,需要提供管理员权限"}
 
 func allNotBanned(group int64) {
 	cqp.SetGroupWholeBan(group, false)

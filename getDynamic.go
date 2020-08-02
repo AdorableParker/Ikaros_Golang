@@ -19,6 +19,13 @@ type crawlerUpdateInfo struct {
 	UpdateTime int64 `gorm:"column:update_time"`
 }
 
+// DocDynamicByID B站动态查询功能文档
+var DocDynamicByID = &HelpDoc{
+	Name:        "B站动态查询",
+	KeyWord:     []string{"B站动态"},
+	Example:     "B站动态 114514",
+	Description: "B站动态<空格><UID>\n用于查询指定UID的用户的B站动态"}
+
 func dynamicByID(msg []string, msgID int32, group, qq int64, try uint8) {
 	if len(msg) == 0 { // 如果没有获取到参数
 		try++         // 已尝试次数+1
@@ -42,6 +49,17 @@ func dynamicByID(msg []string, msgID int32, group, qq int64, try uint8) {
 	}
 	sendDynamic([]string{}, group, qq, int(uid))
 }
+
+// DocSendDynamic B站动态快捷查询功能文档
+var DocSendDynamic = &HelpDoc{
+	Name: "B站动态快捷查询",
+	KeyWord: []string{
+		"小加加", "火星加", "B博更新", "b博更新",
+		"转推姬", "碧蓝日推",
+		"罗德岛线报", "方舟公告", "方舟B博", "阿米娅",
+		"月球人公告", "FGO公告", "呆毛王"},
+	Example:     "小加加 1\n碧蓝日推 5\n方舟功告\nFGO公告",
+	Description: "命令空格后加数字可回溯指定条数的历史动态"}
 
 func sendDynamic(tomsg []string, group, qq int64, id int) {
 	var pages int = 0
@@ -157,6 +175,11 @@ func getDynamic(id, pages int, flag bool) (int64, string, []string) {
 		summary, _ := jsonparser.GetString(card, "summary")   // 摘要
 		imgSrc, _ := jsonparser.GetString(card, "banner_url") // 封面图片
 		return timestamp, fmt.Sprintf("专栏标题:%s\n专栏摘要：\n%s…", title, summary), []string{imgSrc}
+	case 2048:
+		title, _ := jsonparser.GetString(card, "sketch", "title")          // 标题
+		context, _ := jsonparser.GetString(card, "vest", "content")        // 内容
+		targetURL, _ := jsonparser.GetString(card, "sketch", "target_url") // 相关链接
+		return timestamp, fmt.Sprintf("动态标题:%s\n动态内容：\n%s\n相关链接:\n%s", title, context, targetURL), nil
 	default:
 		cqp.AddLog(30, "JSON错误", fmt.Sprintf("错误信息:未知的类型码 %v ", dynamicType))
 		return 0, "是未知的动态类型,无法解析", nil

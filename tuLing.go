@@ -33,6 +33,12 @@ var response = [...]string{"伊卡洛斯记住了你的话，因为你的认真�
 	"伊卡洛斯喜欢学习\nヾ(◍°∇°◍)ﾉﾞ",
 	"虽然不太懂，但是伊卡洛斯还是把你教的知识记在了心里"}
 
+// DocTuling 图灵对话功能文档
+var DocTuling = &HelpDoc{
+	Name:    "图灵AI",
+	KeyWord: []string{"伊卡洛斯"},
+	Example: "伊卡洛斯 你好啊"}
+
 func tuling(msg string, group, qq int64, flag bool) {
 	var ai []aiQA
 	msg = strings.TrimSpace(msg)              // 移除前后端空格
@@ -109,6 +115,13 @@ func filter(ai []aiQA, source mapset.Set, maxScore float32) []string {
 	}
 	return answerList
 }
+
+// DocTraining 图灵教学功能文档
+var DocTraining = &HelpDoc{
+	Name:        "图灵教学",
+	KeyWord:     []string{"教学", "训练", "调教"},
+	Example:     "训练 生命、宇宙以及万物的答案是什么#42",
+	Description: "伊卡洛斯会完全信任你教给她的所有知识，她把你教给她的所有知识视作珍宝并会很认真的将其牢牢记住..所以请不要让她学坏哦！"}
 
 func training(msgs []string, msgID int32, group, qq int64, try uint8) {
 	if !DBConn {

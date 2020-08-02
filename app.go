@@ -28,6 +28,14 @@ type stagedSession struct {
 	TryOpportunity uint8                                       // 已尝试次数
 }
 
+// HelpDoc 帮助文档类
+type HelpDoc struct {
+	Name        string   // 功能名
+	KeyWord     []string // 关键字
+	Example     string   // 例子
+	Description string   // 说明
+}
+
 type keyConf struct {
 	AdminAccount int64
 	SaucenaoKey  string
@@ -264,6 +272,9 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 
 	case "dynamicByID", "B站动态":
 		dynamicByID(msg[1:], msgID, fromGroup, fromQQ, 0)
+
+	case "solitaire", "成语接龙", "接龙":
+		solitaire(msg[1:], fromGroup, fromQQ)
 
 	case "小加加", "火星加", "B博更新", "b博更新":
 		sendDynamic(msg[1:], fromGroup, fromQQ, 233114659)

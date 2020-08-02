@@ -31,6 +31,13 @@ type shipSalvageMap struct {
 	Chapter13   uint8  `gorm:"column:Chapter13"`
 }
 
+// DocShipMap 碧蓝航线舰船打捞定位功能文档
+var DocShipMap = &HelpDoc{
+	Name:        "碧蓝航线舰船打捞定位",
+	KeyWord:     []string{"打捞定位"},
+	Example:     "打捞定位 萨拉托加\n打捞定位 3-4",
+	Description: "打捞定位<空格><船名|地图坐标>\n用于查询指定地图的掉落情况或是舰船打捞地点"}
+
 func shipMap(msg []string, msgID int32, group, qq int64, try uint8) {
 	if len(msg) == 0 { // 如果没有获取到参数
 		try++         // 已尝试次数+1

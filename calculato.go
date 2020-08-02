@@ -39,6 +39,13 @@ func newStack() stack {
 	return stack{top: -1}
 }
 
+// DocCalculato 计算器功能文档
+var DocCalculato = &HelpDoc{
+	Name:        "计算器",
+	KeyWord:     []string{"计算器", "计算"},
+	Example:     "计算器 17+4/2-8*(2^3*3+4-3!)%5",
+	Description: "目前支持加减乘除开方求模阶乘"}
+
 func calculato(msg []string, msgID int32, group, qq int64, try uint8) {
 
 	if len(msg) == 0 { // 如果没有获取到参数

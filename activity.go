@@ -11,6 +11,13 @@ import (
 	"gopkg.in/ini.v1"
 )
 
+// DocActivity 碧蓝航线活动进度计算器功能文档
+var DocActivity = &HelpDoc{
+	Name:        "碧蓝航线活动进度计算器",
+	KeyWord:     []string{"活动进度", "进度计算", "奖池计算"},
+	Example:     "活动进度 12345\n进度计算 12345#67890",
+	Description: "活动进度<空格><已刷点数>#[目标点数]\n根据已刷点数，返回活动进度报告"}
+
 func activity(msg []string, msgID int32, group, qq int64, try uint8) {
 	if len(msg) == 0 { // 如果没有获取到参数
 		try++         // 已尝试次数+1
