@@ -122,6 +122,7 @@ func onEnable() int32 {
 	Jb = gojieba.NewJieba()
 	Appdir = cqp.GetAppDir()
 	Datedir = filepath.Join(Appdir, "User.db")
+	// cqp.AddLog(0, "Dir", Appdir)
 	atMe = fmt.Sprintf("[CQ:at,qq=%d]", cqp.GetLoginQQ())
 	err := ini.MapTo(AdminConfig, Appdir+"MainConf.ini")
 	if err != nil {
@@ -130,31 +131,32 @@ func onEnable() int32 {
 	}
 	// cqp.AddLog(0, "", fmt.Sprintln(AdminConfig))
 	// 每小时的 报时任务
-	wg.Add(1)
+	// wg.Add(1)
 	go callBellTask()
-
+	
 	// 每六分钟的 检查动态更新任务
-	wg.Add(1)
+	// wg.Add(1)
 	go updateCheckTask()
-
+	
 	// 每天的晚九点半 提醒任务
-	wg.Add(1)
+	// wg.Add(1)
 	go remindTask()
 	LoadingFinished = true
-	wg.Wait()
+	// wg.Wait()
 	return 0
 }
 
 func onDisable() int32 {
 	Jb.Free()
 	// cron.Clear()
-	wg.Done()
-	wg.Done()
-	wg.Done()
+	// wg.Done()
+	// wg.Done()
+	// wg.Done()
 	return 0
 }
 
 func onPrivateMsg(subType, msgID int32, fromQQ int64, msg string, font int32) int32 {
+	cqp.AddLog(0, "调试编码", fmt.Sprintln("私聊部分", msg))
 	if !LoadingFinished {
 		cqp.AddLog(0, "初始化中", "初始化完成前不处理消息")
 		return 0
@@ -168,12 +170,14 @@ func onPrivateMsg(subType, msgID int32, fromQQ int64, msg string, font int32) in
 }
 
 func onGroupMsg(subType, msgID int32, fromGroup, fromQQ int64, fromAnonymous, msg string, font int32) int32 {
+
 	if !LoadingFinished {
 		cqp.AddLog(0, "初始化中", "初始化完成前不处理消息")
 		return 0
 	}
-	// cqp.AddLog(0, "t", fmt.Sprintln("msgid:", msgID))
+	cqp.AddLog(0, "调试编码", fmt.Sprintln("群消息", msg))
 
+	// cqp.AddLog(0, "t", fmt.Sprintln("msgid:", msgID))
 	if atForMe(msg) {
 		tuling(strings.Join(strings.Split(msg, atMe), ""), fromGroup, fromQQ, true)
 		return 0
