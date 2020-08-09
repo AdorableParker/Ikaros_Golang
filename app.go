@@ -156,7 +156,7 @@ func onDisable() int32 {
 }
 
 func onPrivateMsg(subType, msgID int32, fromQQ int64, msg string, font int32) int32 {
-	cqp.AddLog(0, "调试编码", fmt.Sprintln("私聊部分", msg))
+	// cqp.AddLog(0, "调试编码", fmt.Sprintln("私聊部分", msg))
 	if !LoadingFinished {
 		cqp.AddLog(0, "初始化中", "初始化完成前不处理消息")
 		return 0
@@ -170,12 +170,11 @@ func onPrivateMsg(subType, msgID int32, fromQQ int64, msg string, font int32) in
 }
 
 func onGroupMsg(subType, msgID int32, fromGroup, fromQQ int64, fromAnonymous, msg string, font int32) int32 {
-
 	if !LoadingFinished {
 		cqp.AddLog(0, "初始化中", "初始化完成前不处理消息")
 		return 0
 	}
-	cqp.AddLog(0, "调试编码", fmt.Sprintln("群消息", msg))
+	// cqp.AddLog(0, "调试编码", fmt.Sprintln("群消息", msg))
 
 	// cqp.AddLog(0, "t", fmt.Sprintln("msgid:", msgID))
 	if atForMe(msg) {

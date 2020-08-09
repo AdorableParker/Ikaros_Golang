@@ -105,7 +105,7 @@ func updateCheckt(id int) (string, bool) {
 		var newmsg string
 		if img != nil {
 			if cqp.CanSendImage() {
-				newmsg = msg + "\n附图：\n[CQ:image,file=" + strings.Join(img, "]\n[CQ:image,file=") + "]"
+				newmsg = msg + "\n附图：\n[CQ:image,url=" + strings.Join(img, "]\n[CQ:image,url=") + "]"
 			} else {
 				newmsg = msg + "\n附图：\n" + strings.Join(img, "\n")
 			}

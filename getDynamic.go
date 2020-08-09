@@ -84,12 +84,12 @@ func sendDynamic(tomsg []string, group, qq int64, id int) {
 	var newmsg string
 	if img != nil {
 		// cqp.AddLog(0, "测试文本", fmt.Sprintf("图片列表:%v", img))
-		if cqp.CanSendImage() {
-			newmsg = msg + "\n附图：\n[CQ:image,file=" + strings.Join(img, "]\n[CQ:image,file=") + "]"
-		} else {
-			newmsg = msg + "\n附图：\n" + strings.Join(img, "\n")
+		// if cqp.CanSendImage() {
+			newmsg = msg + "\n附图：\n[CQ:image,url=" + strings.Join(img, "]\n[CQ:image,url=") + "]"
+		// } else {
+			// newmsg = msg + "\n附图：\n" + strings.Join(img, "\n")
 			// cqp.AddLog(0, "测试文本", fmt.Sprintf("输出:%v", newmsg))
-		}
+		// }
 	} else {
 		newmsg = msg
 	}

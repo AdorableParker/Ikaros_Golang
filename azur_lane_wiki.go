@@ -86,10 +86,11 @@ func getWikiImg(index string) string {
 }
 
 func sendPhoto(group, qq int64, imgURL string) {
-	if cqp.CanSendImage() {
-		sendMsg(group, qq, fmt.Sprintf("[CQ:image,file=%s]", imgURL))
-	} else {
-		s := fmt.Sprintf("[CQ:at,qq=%d]\n图片链接:%s", qq, imgURL)
-		sendMsg(group, qq, s)
-	}
+	// if cqp.CanSendImage() {
+	sendMsg(group, qq, fmt.Sprintf("[CQ:image,url=%s]", imgURL))
+
+	// } else {
+	// s := fmt.Sprintf("[CQ:at,qq=%d]\n图片链接:%s", qq, imgURL)
+	// sendMsg(group, qq, s)
+	// }
 }

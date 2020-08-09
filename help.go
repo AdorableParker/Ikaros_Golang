@@ -50,7 +50,6 @@ func help(nameList []string, fromGroup, fromQQ int64) {
 			text = append(text, functionName)
 		}
 		sendMsg(fromGroup, fromQQ, strings.Join(text, "\n"))
-		sendMsg(fromGroup, fromQQ, "带有>标志的为命令集合\n带有#标志的为非同名命令,即命令关键词与命令名不一致\n具体命令关键字都请查看详细内容获知")
-		sendMsg(fromGroup, fromQQ, "查看详细帮助内容\n使用帮助<空格><命令名>\n例:\n帮助 >wiki榜单\n帮助 #碧蓝航线活动进度\n帮助 群活跃数据\n######################")
+		sendMsg(fromGroup, fromQQ, "查看详细帮助内容\n使用帮助<空格><命令名>\n例:\n帮助 以图搜图\n帮助 控制台\n帮助 群活跃数据")
 	}
 }
