@@ -8,7 +8,7 @@ import (
 var helpdocset = make(map[string]*HelpDoc, 25)
 
 func (funcName HelpDoc) readme(group, qq int64) {
-	sendMsg(group, qq, fmt.Sprintf("功能名：%s\n命令关键字:%v\n范例:%s\n说明:%s", funcName.Name, funcName.KeyWord, funcName.Example, funcName.Description))
+	sendMsg(group, qq, fmt.Sprintf("功能名：%s\n命令关键字:%v\n范例:\n%s\n说明:\n%s", funcName.Name, funcName.KeyWord, funcName.Example, funcName.Description))
 }
 
 func help(nameList []string, fromGroup, fromQQ int64) {
@@ -50,6 +50,6 @@ func help(nameList []string, fromGroup, fromQQ int64) {
 			text = append(text, functionName)
 		}
 		sendMsg(fromGroup, fromQQ, strings.Join(text, "\n"))
-		sendMsg(fromGroup, fromQQ, "查看详细帮助内容\n使用帮助<空格><命令名>\n例:\n帮助 以图搜图\n帮助 控制台\n帮助 群活跃数据")
+		sendMsg(fromGroup, fromQQ, "查看详细帮助内容\n使用帮助<空格><命令名>\n例:\n帮助 以图搜图\n帮助 控制台")
 	}
 }

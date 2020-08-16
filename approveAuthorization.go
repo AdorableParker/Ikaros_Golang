@@ -28,6 +28,7 @@ func approveAuthorization(msg []string, msgID int32, group, qq int64, try uint8)
 		for i, j := range AuthorizedGroupList {
 			if j == 0 {
 				AuthorizedGroupList[i] = authorizedGroup
+				sendMsg(group, qq, "完成")
 				return
 			}
 		}
@@ -36,6 +37,7 @@ func approveAuthorization(msg []string, msgID int32, group, qq int64, try uint8)
 		cqp.SendGroupMsg(group, "请提供需授权群号")
 		try++
 		stagedSessionPool[msgID] = newStagedSession(group, qq, approveAuthorization, msg, try) // 将一个 待跟进会话 加入 会话池
+		sendMsg(group, qq, "完成")
 		return
 	}
 }

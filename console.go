@@ -27,8 +27,7 @@ type groupInfo struct {
 	FateGrandOrder uint8 `gorm:"column:FateGrandOrder"`
 
 	// 报时
-	CallBell   uint8 `gorm:"column:Call_bell"`
-	CallBellAZ uint8 `gorm:"column:Call_bell_AZ"`
+	CallBell uint8 `gorm:"column:Call_bell"`
 
 	// 每日提醒
 	DailyRemindAzurLane uint8 `gorm:"column:Daily_remind_AzurLane"`
@@ -53,9 +52,10 @@ var DocConsole = &HelpDoc{
 	KeyWord: []string{
 		"改变复读姬状态\n", "改变主动对话许可状态\n", "设定新入群禁言时间\n",
 		"改变火星时报订阅状态\n", "改变标枪快讯订阅状态\n", "改变罗德岛线报订阅状态\n",
-		"改变FGO订阅状态\n", "改变报时鸟状态\n", "改变报时鸟_舰C版状态\n",
+		"改变FGO订阅状态\n", "改变报时鸟模式\n",
 		"改变迎新功能状态\n", "改变每日提醒_舰B版功能状态\n", "改变每日提醒_FGO版功能状态\n"},
-	Description: "需群管理员以上权限才能触发"}
+	Example:     "改变复读姬状态\n改变报时鸟模式 1\n设定新入群禁言时间 5",
+	Description: "需群管理员以上权限才能触发\n报时模式目前共四种:\n0\t关闭\n1\t标准\n2\t舰C\n3\t明日方舟"}
 
 func fireAlter(group int64) {
 	var g groupInfo
@@ -155,10 +155,22 @@ func javelinNewsAlter(group int64) {
 
 // callBellAlter(group int64, flag uint8)
 // group 群号码
-// flag = true 普通模式
-// flag = false 舰C 模式
-func callBellAlter(group int64, flag bool) {
+// flag = 0 关闭
+// flag = 1 标准
+// flag = 2 舰C
+// flag = 3 明日方舟
+func callBellAlter(group int64, msg []string) {
 	var g groupInfo
+	var mod = [...]string{"关闭", "标准", "舰C", "明日方舟"}
+	if len(msg) == 0 {
+		cqp.SendGroupMsg(group, "无参数,执行失败")
+		return
+	}
+	flag, err := strconv.ParseUint(msg[0], 0, 8)
+	if err != nil || flag >= 4 {
+		cqp.SendGroupMsg(group, "无效参数,执行失败")
+		return
+	}
 	// 链接数据库
 	db, err := gorm.Open("sqlite3", Datedir)
 	defer db.Close()
@@ -169,19 +181,8 @@ func callBellAlter(group int64, flag bool) {
 	}
 	// 查询数据库
 	db.Table("group_info").Where("group_id = ?", group).First(&g)
-	if flag {
-		db.Table("group_info").Where("group_id = ?", group).Update("Call_bell", 1^g.CallBell)
-		if 1^g.CallBell == 1 {
-			db.Table("group_info").Where("group_id = ?", group).Update("Call_bell_AZ", false)
-		}
-		cqp.SendGroupMsg(group, fmt.Sprintf("报时鸟原状态为 %t\n现状态已改为 %t", real[g.CallBell], real[1^g.CallBell]))
-	} else {
-		db.Table("group_info").Where("group_id = ?", group).Update("Call_bell_AZ", 1^g.CallBellAZ)
-		if 1^g.CallBellAZ == 0 {
-			db.Table("group_info").Where("group_id = ?", group).Update("Call_bell", false)
-		}
-		cqp.SendGroupMsg(group, fmt.Sprintf("舰C版报时鸟原状态为 %t\n现状态已改为 %t", real[g.CallBellAZ], real[1^g.CallBellAZ]))
-	}
+	db.Table("group_info").Where("group_id = ?", group).Update("Call_bell", flag)
+	cqp.SendGroupMsg(group, fmt.Sprintf("报时鸟原模式为 %s\n现已改为 %s", mod[g.CallBell], mod[flag]))
 }
 
 func dailyRemindAlter(group int64) {

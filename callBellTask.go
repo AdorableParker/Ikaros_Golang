@@ -16,7 +16,8 @@ import (
 )
 
 type updateCallInfo struct {
-	GroupID int64 `gorm:"column:group_id"`
+	GroupID  int64 `gorm:"column:group_id"`
+	CallBell uint8 `gorm:"column:Call_bell"`
 }
 
 func callBellTask() {
@@ -55,26 +56,17 @@ func callBellTask() {
 		nowTime := time.Now().Hour()
 		var checkList []updateCallInfo
 		// 查询数据库
-		db.Table("group_info").Select("group_id").Where("Call_bell = ?", "1.0").Find(&checkList)
-		for _, checkGroup := range checkList {
-			if flag {
-				cqp.SendGroupMsg(checkGroup.GroupID, fmt.Sprintf("啊，迟到了，现在是%d点", nowTime))
-			} else {
-				cqp.SendGroupMsg(checkGroup.GroupID, fmt.Sprintf("现在%d点咯", nowTime))
-			}
-		}
+		db.Table("group_info").Select("group_id").Where("Call_bell != ?", "0").Find(&checkList)
 
-		msg := getScript(nowTime)
-		if msg == "" {
-			msg = fmt.Sprintf("现在%d点咯，好啦是我忘词啦，你好烦欸╰（‵□′）╯", nowTime)
-		}
-		// 查询数据库
-		db.Table("group_info").Select("group_id").Where("Call_bell_AZ = ?", "1.0").Find(&checkList)
 		for _, checkGroup := range checkList {
 			if flag {
 				cqp.SendGroupMsg(checkGroup.GroupID, "啊，迟到了")
 			}
-			cqp.SendGroupMsg(checkGroup.GroupID, msg)
+			msg := getScript(nowTime, checkGroup.CallBell) // 取台词
+			if msg == "" {                                 // 失败
+				msg = fmt.Sprintf("现在%d点咯，好啦是我忘词啦，你好烦欸╰（‵□′）╯", nowTime)
+			}
+			cqp.SendGroupMsg(checkGroup.GroupID, msg) // 输出
 		}
 
 		db.Close()
@@ -89,17 +81,29 @@ func callBellTask() {
 		// time.Sleep(2 * time.Minute) // 六分钟后继续
 	}
 }
+// getScript(h int, flag uint8) string
+// Name     Tpye
+// 关闭      0
+// 标准      1
+// 舰C       2
+// 明日方舟	  3
+func getScript(h int, flag uint8) string {
+	CallBellList := [...]string{"","", "KantaiCollection", "Arknights"}
 
-func getScript(h int) string {
-	files, err := ioutil.ReadDir(filepath.Join(Appdir, "time_txt"))
+	if flag == 1 {
+		return fmt.Sprintf("现在%d点咯", h)
+	}
+
+	// 取文件列表
+	files, err := ioutil.ReadDir(filepath.Join(Appdir, "time_txt", CallBellList[flag]))
 	if err != nil {
 		cqp.AddLog(30, "文件列表读取错误", fmt.Sprintln(err))
 		return ""
 	}
+
 	rand.Seed(time.Now().UnixNano())
 	fileName := files[rand.Intn(len(files))].Name()
-
-	f, err := os.Open(filepath.Join(Appdir, "time_txt", fileName))
+	f, err := os.Open(filepath.Join(Appdir, "time_txt", CallBellList[flag], fileName))
 	defer f.Close()
 	if err != nil {
 		cqp.AddLog(30, "台词文件读取错误", fmt.Sprintln(err))
@@ -111,5 +115,5 @@ func getScript(h int) string {
 		return ""
 	}
 	script := strings.Split(string(fd), "\n")
-	return script[h] + "                  ————" + fileName
+	return script[h] + "                  ——" + fileName
 }

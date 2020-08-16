@@ -133,11 +133,11 @@ func onEnable() int32 {
 	// 每小时的 报时任务
 	// wg.Add(1)
 	go callBellTask()
-	
+
 	// 每六分钟的 检查动态更新任务
 	// wg.Add(1)
 	go updateCheckTask()
-	
+
 	// 每天的晚九点半 提醒任务
 	// wg.Add(1)
 	go remindTask()
@@ -242,7 +242,7 @@ func sendMsg(group, qq int64, msg string) {
 }
 
 func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
-	switch msg[0] {
+	switch msg[0] {	
 	case "approveAuthorization", "授权批准":
 		approveAuthorization(msg[1:], msgID, fromGroup, fromQQ, 0)
 
@@ -326,10 +326,6 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 				switch msg[0] {
 				case "allBanned", "全员禁言", "全员自闭":
 					allBanned(fromGroup, fromQQ)
-				case "改变报时鸟状态":
-					callBellAlter(fromGroup, true)
-				case "改变报时鸟_舰C版状态":
-					callBellAlter(fromGroup, false)
 				case "改变每日提醒_舰B版功能状态":
 					dailyRemindAlter(fromGroup)
 				case "改变每日提醒_FGO版功能状态":
@@ -348,6 +344,8 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 					repeatAlter(fromGroup)
 				case "改变迎新功能状态":
 					newAddAlter(fromGroup)
+				case "改变报时鸟模式":
+					callBellAlter(fromGroup, msg[1:])
 				case "设定新入群禁言时间":
 					groupPolicy(msg[1:], msgID, fromGroup, fromQQ, 0)
 				default:
