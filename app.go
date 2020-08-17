@@ -242,7 +242,7 @@ func sendMsg(group, qq int64, msg string) {
 }
 
 func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
-	switch msg[0] {	
+	switch msg[0] {
 	case "approveAuthorization", "授权批准":
 		approveAuthorization(msg[1:], msgID, fromGroup, fromQQ, 0)
 

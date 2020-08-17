@@ -56,7 +56,7 @@ func callBellTask() {
 		nowTime := time.Now().Hour()
 		var checkList []updateCallInfo
 		// 查询数据库
-		db.Table("group_info").Select("group_id").Where("Call_bell != ?", "0").Find(&checkList)
+		db.Table("group_info").Select("group_id, Call_bell").Where("Call_bell <> ?", "0").Find(&checkList)
 
 		for _, checkGroup := range checkList {
 			if flag {
@@ -81,6 +81,7 @@ func callBellTask() {
 		// time.Sleep(2 * time.Minute) // 六分钟后继续
 	}
 }
+
 // getScript(h int, flag uint8) string
 // Name     Tpye
 // 关闭      0
@@ -88,7 +89,7 @@ func callBellTask() {
 // 舰C       2
 // 明日方舟	  3
 func getScript(h int, flag uint8) string {
-	CallBellList := [...]string{"","", "KantaiCollection", "Arknights"}
+	CallBellList := [...]string{"", "", "KantaiCollection", "Arknights"}
 
 	if flag == 1 {
 		return fmt.Sprintf("现在%d点咯", h)
