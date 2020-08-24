@@ -48,7 +48,7 @@ func calculateParts(lowLv, highLv, existing int, flag bool) (totalExp int) {
 var DocCalculationExp = &HelpDoc{
 	Name:        "碧蓝航线舰船经验计算器",
 	KeyWord:     []string{"舰船经验", "经验计算"},
-	Example:     "活动进度 10 20 F 0\n活动进度 10 20 F\n活动进度 10 20",
+	Example:     "舰船经验 10 20 F 0\n经验计算 10 20 F\n经验计算 10 20",
 	Description: "命令输入格式:\n舰船经验<空格><当前等级><空格><目标等级><空格>[是否为决战方案]<空格>[已有经验]\n根据输入的参数，返回达成目标等级需要的经验或是溢出的经验\n"}
 
 func calculationExp(msg []string, msgID int32, group, qq int64, try uint8) {
