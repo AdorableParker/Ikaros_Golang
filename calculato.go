@@ -150,7 +150,7 @@ func calculation(input string) (output float64, err error) {
 			flag = true
 
 		case '-': // 判断负号
-			if len(numS) == 0 {
+			if len(numS) == 0 && flag == false {
 				numS = append(numS, i)
 				break
 			}
