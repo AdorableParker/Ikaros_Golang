@@ -113,11 +113,11 @@ func getDynamic(id, pages int, flag bool) (int64, string, []string) {
 		return -1, "", nil
 	}
 	resp, err := client.Do(req)
-	defer resp.Body.Close()
 	if err != nil {
 		cqp.AddLog(30, "HTTP错误", fmt.Sprintf("错误信息:%v", err))
 		return -1, "", nil
 	}
+	defer resp.Body.Close()
 	bodyText, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		cqp.AddLog(30, "HTTP错误", fmt.Sprintf("错误信息:%v", err))

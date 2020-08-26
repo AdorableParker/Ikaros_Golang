@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Tnze/CoolQ-Golang-SDK/cqp"
 	"github.com/buger/jsonparser"
 )
 
@@ -22,16 +23,19 @@ func getSongID(songName string, source int) (songID int64) {
 	}
 
 	if err != nil {
-		fmt.Println(err)
+		cqp.AddLog(30, "HTTP错误", fmt.Sprintf("错误信息:%v", err))
+		// fmt.Println(err)
 	}
 	resp, err := client.Do(req)
-	defer resp.Body.Close()
 	if err != nil {
-		fmt.Println(err)
+		cqp.AddLog(30, "HTTP错误", fmt.Sprintf("错误信息:%v", err))
+		// fmt.Println(err)
 	}
+	defer resp.Body.Close()
 	bodyText, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println(err)
+		cqp.AddLog(30, "HTTP错误", fmt.Sprintf("错误信息:%v", err))
+		// fmt.Println(err)
 	}
 	switch source {
 	case 0:
