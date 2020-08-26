@@ -43,7 +43,6 @@ var DocConstruction = &HelpDoc{
 	Description: "建造时间查询<空格><时间|船名>\n用于查询指定时间或是舰船的相关建造信息"}
 
 func construction(msg []string, msgID int32, group, qq int64, try uint8) {
-
 	if len(msg) == 0 { // 如果没有获取到参数
 		try++         // 已尝试次数+1
 		if try <= 3 { // 如果已尝试次数不超过3次
@@ -58,7 +57,6 @@ func construction(msg []string, msgID int32, group, qq int64, try uint8) {
 		}
 		return
 	}
-
 	re := regexp.MustCompile(`\d:\d\d`)
 	constructionTime := re.FindAllString(strings.Replace(msg[0], "：", ":", -1), 1) // 正则匹配查找索引
 	var results []string
@@ -103,7 +101,7 @@ func nameToTime(index string) []string {
 		}
 		out[page] += fmt.Sprintf("\n原名:%s\t和谐名:%s\t建造时长:%s", data.Currentname, data.Usedname, data.Time)
 	}
-
+	
 	out = append(out, fmt.Sprintf("结果共计%d条,已全部列出", len(shipInfos)))
 
 	return out

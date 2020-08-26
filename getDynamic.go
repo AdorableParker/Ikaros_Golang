@@ -58,7 +58,7 @@ var DocSendDynamic = &HelpDoc{
 		"转推姬", "碧蓝日推",
 		"罗德岛线报", "方舟公告", "方舟B博", "阿米娅",
 		"月球人公告", "FGO公告", "呆毛王"},
-	Example:     "小加加 1\n碧蓝日推 5\n方舟功告\nFGO公告",
+	Example:     "小加加 1\n碧蓝日推 5\n方舟公告\nFGO公告",
 	Description: "命令空格后加数字可回溯指定条数的历史动态"}
 
 func sendDynamic(tomsg []string, group, qq int64, id int) {
@@ -113,6 +113,7 @@ func getDynamic(id, pages int, flag bool) (int64, string, []string) {
 		return -1, "", nil
 	}
 	resp, err := client.Do(req)
+	defer resp.Body.Close()
 	if err != nil {
 		cqp.AddLog(30, "HTTP错误", fmt.Sprintf("错误信息:%v", err))
 		return -1, "", nil

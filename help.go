@@ -34,6 +34,7 @@ func help(nameList []string, fromGroup, fromQQ int64) {
 		helpdocset[DocTraining.Name] = DocTraining
 		helpdocset[DocTuling.Name] = DocTuling
 		helpdocset[DocWater.Name] = DocWater
+		helpdocset[DocMusic.Name] = DocMusic
 	}
 
 	if len(nameList) != 0 {

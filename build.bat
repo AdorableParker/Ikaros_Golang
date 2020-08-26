@@ -45,7 +45,7 @@ SET GOOS=windows
 SET GOARCH=386
 
 echo Building app.dll ...
-go build -ldflags "-s -w" -buildmode=c-shared -o app.dll
+go build -ldflags "-s -w" -buildmode=c-shared -o app.dev.dll
 IF ERRORLEVEL 1 (pause) ELSE (echo Build success!)
 
 if defined DevDir (
