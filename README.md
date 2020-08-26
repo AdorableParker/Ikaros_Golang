@@ -17,6 +17,7 @@
 **酷Q服务器停运了,所以该项目维护无限期暂停**
 **什么时候有替代平台了，什么时候再考虑继续项目了**
 ## 如何使用 ##
+**$ 以下说明仅仅适用于 *Cook Q* 平台**
 ### 使用者请看这里: ###
 1. 在[![release](https://badgen.net/github/release/AdorableParker/Ikaros_Golang/stable)](https://github.com/AdorableParker/Ikaros_Golang/releases)下载最新稳定版本
 2. 将下载的放入`.cpk`文件放入酷Q的应用目录
@@ -32,7 +33,7 @@
 1.  运行`build.bat`来进行编译生成`app.dll`和`app.json`
 2.  下载`app.dll`和`app.json`文件
 3.  打开 Cool Q 的开发者模式
-4.  把`app.dll`和`app.json`放到`..\dev\com.adorableparker.github.ikaros_golang`目录下
+4.  把`app.dev.dll`和`app.json`放到`..\dev\com.adorableparker.github.ikaros_golang`目录下
     >   `app.json`应该会要根据你的修改稍微改改内容，具体的修改请参考SDK文档
     >   `https://pkg.go.dev/github.com/Tnze/CoolQ-Golang-SDK/cqp?tab=doc`
 5.  下载`Configuration_data`文件夹里面的文件
