@@ -17,7 +17,7 @@
 **酷Q服务器停运了,所以该项目维护无限期暂停**
 **什么时候有替代平台了，什么时候再考虑继续项目了**
 ## 如何使用 ##
-**$ 以下说明仅仅适用于 *Cook Q* 平台**
+**$ 以下说明仅仅适用于 *Cool Q* 平台**
 ### 使用者请看这里: ###
 1. 在[![release](https://badgen.net/github/release/AdorableParker/Ikaros_Golang/stable)](https://github.com/AdorableParker/Ikaros_Golang/releases)下载最新稳定版本
 2. 将下载的放入`.cpk`文件放入酷Q的应用目录
