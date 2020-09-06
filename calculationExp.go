@@ -87,7 +87,7 @@ func calculatePartsPro(lowLv, highLv int, flag bool) int {
 	default:
 		totalExp += (highLv-100)*200 + 7000
 	}
-	fmt.Println(totalExp, highLv)
+	// fmt.Println(totalExp, highLv)
 	if flag && highLv <= 119 {
 		totalExp *= 12
 	}
