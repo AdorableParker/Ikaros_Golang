@@ -5,43 +5,95 @@ import (
 	"strconv"
 )
 
-type lv2Exp struct {
-	Lv          int
-	Coefficient int
-}
-
-var expList []lv2Exp = []lv2Exp{
-	{40, 1}, {60, 2}, {70, 3},
-	{80, 4}, {90, 5}, {92, 10},
-	{94, 20}, {95, 40}, {97, 50},
-	{98, 200}, {99, 720}, {100, -620},
-	{104, 20}, {105, 70}, {110, 120},
-	{115, 180}, {119, 210}, {120, 0}}
-
-func calculateParts(lowLv, highLv, existing int, flag bool) (totalExp int) {
-	for ; lowLv < highLv; lowLv++ {
-		needExp := 0
-		lastLv := 0
-		for _, item := range expList {
-			rankDifference := lowLv - item.Lv
-			if rankDifference <= 0 {
-				needExp += item.Coefficient * (rankDifference + item.Lv - lastLv)
-				break
-			}
-			needExp += item.Coefficient * (item.Lv - lastLv)
-			lastLv = item.Lv
-		}
-		if flag {
-			if 90 <= lowLv && lowLv < 100 {
-				totalExp += needExp * 13
-			} else {
-				totalExp += needExp * 12
-			}
+// n*100 + (n-40)*100 + (n-60)*100 + (n-70)*100 + (n-80)*100 + (n-90)*500 + (n-92)*1000 + (n-94)*2000 + (n-95)*1000 + (n-97)*15000 + (n-98)*52000
+func calculateParts(lowLv, highLv int, flag bool) int {
+	highLv--
+	if highLv < lowLv {
+		return 0
+	} else if highLv >= 100 {
+		return calculatePartsPro(lowLv, highLv, flag) + calculateParts(lowLv, 100, flag)
+	}
+	totalExp := 0
+	switch {
+	case highLv >= 98:
+		totalExp += (highLv - 98) * 5200
+		fallthrough
+	case highLv >= 97:
+		totalExp += (highLv - 97) * 1500
+		fallthrough
+	case highLv >= 95:
+		totalExp += (highLv - 95) * 100
+		fallthrough
+	case highLv >= 94:
+		totalExp += (highLv - 94) * 200
+		fallthrough
+	case highLv >= 92:
+		totalExp += (highLv - 92) * 100
+		fallthrough
+	case highLv >= 90:
+		totalExp += (highLv - 90) * 50
+		fallthrough
+	case highLv >= 80:
+		totalExp += (highLv - 80) * 10
+		fallthrough
+	case highLv >= 70:
+		totalExp += (highLv - 70) * 10
+		fallthrough
+	case highLv >= 60:
+		totalExp += (highLv - 60) * 10
+		fallthrough
+	case highLv >= 40:
+		totalExp += (highLv - 40) * 10
+		fallthrough
+	default:
+		totalExp += highLv * 10
+	}
+	if flag {
+		if highLv < 90 {
+			totalExp *= 12
+			// totalExp = totalExp * 12 / 10
 		} else {
-			totalExp += needExp * 10
+			totalExp *= 13
 		}
 	}
-	return totalExp*10 - existing
+
+	return totalExp + calculateParts(lowLv, highLv, flag)
+
+}
+
+// 70000 + (n-100)*2000 + (n-104)*5000 + (n-105)*5000 + (n-110)*6000 + (n-115)*3000
+func calculatePartsPro(lowLv, highLv int, flag bool) int {
+	if highLv < lowLv || highLv < 100 {
+		return 0
+	}
+	var totalExp int
+	switch {
+	case highLv > 120:
+		totalExp = 0
+	case highLv > 119:
+		totalExp = 3000000
+	case highLv >= 115:
+		totalExp += (highLv - 115) * 300
+		fallthrough
+	case highLv >= 110:
+		totalExp += (highLv - 110) * 600
+		fallthrough
+	case highLv >= 105:
+		totalExp += (highLv - 105) * 500
+		fallthrough
+	case highLv >= 104:
+		totalExp += (highLv - 104) * 500
+		fallthrough
+	default:
+		totalExp += (highLv-100)*200 + 7000
+	}
+	fmt.Println(totalExp, highLv)
+	if flag && highLv <= 119 {
+		totalExp *= 12
+	}
+	highLv--
+	return totalExp + calculatePartsPro(lowLv, highLv, flag)
+
 }
 
 // DocCalculationExp 碧蓝航线舰船经验计算器功能文档
@@ -110,8 +162,9 @@ func calculationExp(msg []string, msgID int32, group, qq int64, try uint8) {
 		return
 	}
 
-	balance := calculateParts(lowLv, highLv, existingExp, shipType)
-	if balance <= 0 {
+	balance := calculateParts(lowLv, highLv, shipType)
+	balance -= existingExp
+	if balance < 0 {
 		sendMsg(group, qq, fmt.Sprintf("当前等级:%d,目标等级:%d\n是否为决战方案:%t\n已有经验:%d\n最终计算结果: 达成目标等级后将溢出 %d EXP", lowLv, highLv, shipType, existingExp, -balance)) // 发送提示消息
 		return
 	}

@@ -34,14 +34,21 @@ type groupInfo struct {
 	DailyRemindFGO      uint8 `gorm:"column:Daily_remind_FGO"`
 
 	// 群策略
-	NewAdd uint8 `gorm:"column:New_add"`
-	Policy int64 `gorm:"column:policy"`
+	NewAdd  uint8 `gorm:"column:New_add"`
+	Policy  int64 `gorm:"column:policy"`
+	SetoMod uint8 `gorm:"column:SetoMod"`
 }
 
 type repeatInfo struct {
 	Info    string `gorm:"column:info"`
 	Flag    uint8  `gorm:"column:flag"`
 	GroupID int64  `gorm:"column:groupid"`
+}
+type rendSeto struct {
+	GroupID int64  `gorm:"column:groupid"`
+	Quota   string `gorm:"column:quota"`
+	Score   uint8  `gorm:"column:score"`
+	Date    int64  `gorm:"column:date"`
 }
 
 var real = [2]bool{false, true}
@@ -50,9 +57,9 @@ var real = [2]bool{false, true}
 var DocConsole = &HelpDoc{
 	Name: "控制台",
 	KeyWord: []string{
-		"改变复读姬状态\n", "改变主动对话许可状态\n", "设定新入群禁言时间\n",
+		"\n改变复读姬状态\n", "改变主动对话许可状态\n", "设定新入群禁言时间\n",
 		"改变火星时报订阅状态\n", "改变标枪快讯订阅状态\n", "改变罗德岛线报订阅状态\n",
-		"改变FGO订阅状态\n", "改变报时鸟模式\n",
+		"改变FGO订阅状态\n", "改变报时鸟模式\n", "改变随机色图模式\n",
 		"改变迎新功能状态\n", "改变每日提醒_舰B版功能状态\n", "改变每日提醒_FGO版功能状态\n"},
 	Example:     "改变复读姬状态\n改变报时鸟模式 1\n设定新入群禁言时间 5",
 	Description: "需群管理员以上权限才能触发\n报时模式目前共四种:\n0\t关闭\n1\t标准\n2\t舰C\n3\t明日方舟"}
@@ -60,7 +67,7 @@ var DocConsole = &HelpDoc{
 func fireAlter(group int64) {
 	var g groupInfo
 	// 链接数据库
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -76,7 +83,7 @@ func fireAlter(group int64) {
 func repeatAlter(group int64) {
 	var g groupInfo
 	// 链接数据库
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -92,7 +99,7 @@ func repeatAlter(group int64) {
 func arknightsAlter(group int64) {
 	var g groupInfo
 	// 链接数据库
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -108,7 +115,7 @@ func arknightsAlter(group int64) {
 func fgoAlter(group int64) {
 	var g groupInfo
 	// 链接数据库
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -124,7 +131,7 @@ func fgoAlter(group int64) {
 func saraNewsAlter(group int64) {
 	var g groupInfo
 	// 链接数据库
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -140,7 +147,7 @@ func saraNewsAlter(group int64) {
 func javelinNewsAlter(group int64) {
 	var g groupInfo
 	// 链接数据库
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -153,7 +160,7 @@ func javelinNewsAlter(group int64) {
 	cqp.SendGroupMsg(group, fmt.Sprintf("火星bot小黄瓜　B站动态订阅原状态为 %t\n现状态已改为 %t", real[g.JavelinNews], real[1^g.JavelinNews]))
 }
 
-// callBellAlter(group int64, flag uint8)
+// callBellAlter(group int64, msg []string)
 // group 群号码
 // flag = 0 关闭
 // flag = 1 标准
@@ -172,7 +179,7 @@ func callBellAlter(group int64, msg []string) {
 		return
 	}
 	// 链接数据库
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -188,7 +195,7 @@ func callBellAlter(group int64, msg []string) {
 func dailyRemindAlter(group int64) {
 	var g groupInfo
 	// 链接数据库
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -204,7 +211,7 @@ func dailyRemindAlter(group int64) {
 func dailyRemindAlterFGO(group int64) {
 	var g groupInfo
 	// 链接数据库
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -220,7 +227,7 @@ func dailyRemindAlterFGO(group int64) {
 func newAddAlter(group int64) {
 	var g groupInfo
 	// 链接数据库
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -250,7 +257,7 @@ func groupPolicy(msg []string, msgID int32, group, qq int64, try uint8) {
 	}
 	var g groupInfo
 	// 链接数据库
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -266,7 +273,7 @@ func groupPolicy(msg []string, msgID int32, group, qq int64, try uint8) {
 func repeater(msg string, group int64) {
 	var g groupInfo
 	var r repeatInfo
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -276,10 +283,9 @@ func repeater(msg string, group int64) {
 	// 查询数据库
 	db.Table("group_info").Where("group_id = ?", group).First(&g)
 	if g.ID == 0 {
-		addg := groupInfo{GroupID: group}
-		r = repeatInfo{GroupID: group}
-		db.Table("group_info").Create(&addg)
-		db.Table("repeat_info").Create(&r)
+		db.Table("group_info").Create(&groupInfo{GroupID: group})
+		db.Table("repeat_info").Create(&repeatInfo{GroupID: group})
+		db.Table("rendSeto").Create(&rendSeto{GroupID: group})
 		return
 	}
 	if g.Repeat == 1 {
@@ -298,7 +304,7 @@ func repeater(msg string, group int64) {
 
 func autoTrigger(group int64) bool {
 	var g groupInfo
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -320,7 +326,7 @@ var nmcm = [...]string{"欢迎新人,能表演一下退群吗",
 
 func onGroupMemberIncrease(subType, sendTime int32, fromGroup, fromQQ, beingOperateQQ int64) int32 {
 	var g groupInfo
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -337,4 +343,35 @@ func onGroupMemberIncrease(subType, sendTime int32, fromGroup, fromQQ, beingOper
 		cqp.SendGroupMsg(fromGroup, fmt.Sprintf("根据你群规定,新人禁言 %d 分钟", g.Policy))
 	}
 	return 0
+}
+
+// setoModAlter(group int64, msg []string)
+// group 群号码
+// flag = 0 关闭
+// flag = 1 安全模式
+// flag = 2 审核模式
+func setoModAlter(group int64, msg []string) {
+	var g groupInfo
+	var mod = [...]string{"关闭", "安全模式", "审核模式"}
+	if len(msg) == 0 {
+		cqp.SendGroupMsg(group, "无参数,执行失败")
+		return
+	}
+	flag, err := strconv.ParseUint(msg[0], 0, 8)
+	if err != nil || flag >= 3 {
+		cqp.SendGroupMsg(group, "无效参数,执行失败")
+		return
+	}
+	// 链接数据库
+	db, err := gorm.Open("sqlite3", Datadir)
+	defer db.Close()
+	if err != nil {
+		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
+		cqp.SendGroupMsg(group, "数据库连接异常\n×_×")
+		return
+	}
+	// 查询数据库
+	db.Table("group_info").Where("group_id = ?", group).First(&g)
+	db.Table("group_info").Where("group_id = ?", group).Update("SetoMod", flag)
+	cqp.SendGroupMsg(group, fmt.Sprintf("随机色图功能原模式为 %s\n现已改为 %s", mod[g.SetoMod], mod[flag]))
 }

@@ -35,12 +35,13 @@ func help(nameList []string, fromGroup, fromQQ int64) {
 		helpdocset[DocTuling.Name] = DocTuling
 		helpdocset[DocWater.Name] = DocWater
 		helpdocset[DocMusic.Name] = DocMusic
+		helpdocset[DocRandSeto.Name] = DocRandSeto
 	}
-
 	if len(nameList) != 0 {
-		doc, ok := helpdocset[nameList[0]]
+		funName := strings.Join(nameList, " ")
+		doc, ok := helpdocset[funName]
 		if !ok {
-			sendMsg(fromGroup, fromQQ, fmt.Sprintf("没有找到名为<%s>的命令集，你是不是打错了\n(●'◡'●)", nameList[0]))
+			sendMsg(fromGroup, fromQQ, fmt.Sprintf("没有找到名为<%s>的命令，你是不是打错了\n(●'◡'●)", nameList[0]))
 			return
 		}
 		doc.readme(fromGroup, fromQQ)
@@ -50,7 +51,7 @@ func help(nameList []string, fromGroup, fromQQ int64) {
 		for functionName := range helpdocset {
 			text = append(text, functionName)
 		}
+		sendMsg(fromGroup, fromQQ, "使用样例格式输入命令查看详细帮助内容\n使用帮助<空格><命令名>\n例:\n帮助 以图搜图\n帮助 控制台\n\n以下为命令名单(命令关键字 与 命令名并不相同)")
 		sendMsg(fromGroup, fromQQ, strings.Join(text, "\n"))
-		sendMsg(fromGroup, fromQQ, "查看详细帮助内容\n使用帮助<空格><命令名>\n例:\n帮助 以图搜图\n帮助 控制台")
 	}
 }

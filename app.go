@@ -43,8 +43,8 @@ type keyConf struct {
 
 var stagedSessionPool = make(map[int32]*stagedSession, 30)
 
-// Datedir 数据库位置
-var Datedir string
+// Datadir 数据库位置
+var Datadir string
 
 // Appdir 配置文件位置
 var Appdir string
@@ -121,7 +121,7 @@ func onEnable() int32 {
 	DBConn = true
 	Jb = gojieba.NewJieba()
 	Appdir = cqp.GetAppDir()
-	Datedir = filepath.Join(Appdir, "User.db")
+	Datadir = filepath.Join(Appdir, "User.db")
 	// cqp.AddLog(0, "Dir", Appdir)
 	atMe = fmt.Sprintf("[CQ:at,qq=%d]", cqp.GetLoginQQ())
 	err := ini.MapTo(AdminConfig, Appdir+"MainConf.ini")
@@ -316,6 +316,10 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 			return false
 		}
 		switch msg[0] {
+		case "randSeto", "随机色图":
+			sendMsg(fromGroup, fromQQ, "功能已写好但由于不可抗因素无法工作")
+			// sendMsg(fromGroup, fromQQ, "[CQ:image,file=2.jpg]")
+			// randSeto(msg, msgID, fromGroup, fromQQ, 0)
 		case "water", "群活跃数据":
 			water(fromGroup)
 		case "allNotBanned", "解禁":
@@ -348,6 +352,8 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 					newAddAlter(fromGroup)
 				case "改变报时鸟模式":
 					callBellAlter(fromGroup, msg[1:])
+				case "改变随机色图模式":
+					setoModAlter(fromGroup, msg[1:])
 				case "设定新入群禁言时间":
 					groupPolicy(msg[1:], msgID, fromGroup, fromQQ, 0)
 				default:

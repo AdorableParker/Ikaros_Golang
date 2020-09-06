@@ -30,7 +30,7 @@ func updateCheckTask() {
 		}
 
 		// 链接数据库
-		db, err := gorm.Open("sqlite3", Datedir)
+		db, err := gorm.Open("sqlite3", Datadir)
 		if err != nil {
 			cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
 			return
@@ -95,7 +95,7 @@ func updateCheckt(id int) (string, bool) {
 		return msg, true
 	default:
 		// 链接数据库
-		db, err := gorm.Open("sqlite3", Datedir)
+		db, err := gorm.Open("sqlite3", Datadir)
 		if err != nil {
 			cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
 			return "", false

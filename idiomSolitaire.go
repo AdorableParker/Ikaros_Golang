@@ -24,7 +24,7 @@ type idioms struct {
 var solitaireGroupList = make(map[int64]*mark)
 
 func solutaire(oldPhonetic, input string) (word, phonetic string, ok uint8) {
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))

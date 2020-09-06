@@ -74,7 +74,7 @@ func nameToTime(index string) []string {
 	index = strings.ToUpper(index)
 	var shipInfos ntt
 	// 读取数据库
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -101,7 +101,7 @@ func nameToTime(index string) []string {
 		}
 		out[page] += fmt.Sprintf("\n原名:%s\t和谐名:%s\t建造时长:%s", data.Currentname, data.Usedname, data.Time)
 	}
-	
+
 	out = append(out, fmt.Sprintf("结果共计%d条,已全部列出", len(shipInfos)))
 
 	return out
@@ -109,7 +109,7 @@ func nameToTime(index string) []string {
 
 func timeToName(index string) []string {
 	// 读取数据库
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))

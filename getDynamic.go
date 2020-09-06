@@ -85,10 +85,10 @@ func sendDynamic(tomsg []string, group, qq int64, id int) {
 	if img != nil {
 		// cqp.AddLog(0, "测试文本", fmt.Sprintf("图片列表:%v", img))
 		// if cqp.CanSendImage() {
-			newmsg = msg + "\n附图：\n[CQ:image,url=" + strings.Join(img, "]\n[CQ:image,url=") + "]"
+		newmsg = msg + "\n附图：\n[CQ:image,url=" + strings.Join(img, "]\n[CQ:image,url=") + "]"
 		// } else {
-			// newmsg = msg + "\n附图：\n" + strings.Join(img, "\n")
-			// cqp.AddLog(0, "测试文本", fmt.Sprintf("输出:%v", newmsg))
+		// newmsg = msg + "\n附图：\n" + strings.Join(img, "\n")
+		// cqp.AddLog(0, "测试文本", fmt.Sprintf("输出:%v", newmsg))
 		// }
 	} else {
 		newmsg = msg
@@ -129,7 +129,7 @@ func getDynamic(id, pages int, flag bool) (int64, string, []string) {
 	timestamp, _ := jsonparser.GetInt([]byte(bodyText), "data", "cards", index, "desc", "timestamp")
 	if flag {
 		// 链接数据库
-		db, err := gorm.Open("sqlite3", Datedir)
+		db, err := gorm.Open("sqlite3", Datadir)
 		defer db.Close()
 		if err != nil {
 			cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))

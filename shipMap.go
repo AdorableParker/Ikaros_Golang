@@ -71,7 +71,7 @@ func nameToMap(index string) []string {
 	var shipInfos []shipSalvageMap
 
 	// 读取数据库
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
@@ -129,7 +129,7 @@ func mapToName(index string) []string {
 	xy := strings.Split(index, "-")
 
 	// 读取数据库
-	db, err := gorm.Open("sqlite3", Datedir)
+	db, err := gorm.Open("sqlite3", Datadir)
 	defer db.Close()
 	if err != nil {
 		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
