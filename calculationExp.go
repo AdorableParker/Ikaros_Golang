@@ -8,6 +8,9 @@ import (
 // n*100 + (n-40)*100 + (n-60)*100 + (n-70)*100 + (n-80)*100 + (n-90)*500 + (n-92)*1000 + (n-94)*2000 + (n-95)*1000 + (n-97)*15000 + (n-98)*52000
 func calculateParts(lowLv, highLv int, flag bool) int {
 	highLv--
+	if highLv > 120 { // 120以上的皆为无效计算
+		return calculateParts(lowLv, 121, flag)
+	}
 	if highLv < lowLv {
 		return 0
 	} else if highLv >= 100 {
@@ -55,6 +58,8 @@ func calculateParts(lowLv, highLv int, flag bool) int {
 		} else {
 			totalExp *= 13
 		}
+	} else {
+		totalExp *= 10
 	}
 
 	return totalExp + calculateParts(lowLv, highLv, flag)
@@ -71,7 +76,7 @@ func calculatePartsPro(lowLv, highLv int, flag bool) int {
 	case highLv > 120:
 		totalExp = 0
 	case highLv > 119:
-		totalExp = 3000000
+		totalExp = 300000
 	case highLv >= 115:
 		totalExp += (highLv - 115) * 300
 		fallthrough
