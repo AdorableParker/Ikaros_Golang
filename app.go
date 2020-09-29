@@ -100,18 +100,26 @@ func onGroupRequest(subType, sendTime int32, fromGroup, fromQQ int64, msg, respo
 	// sendTime 消息时间
 	// msg 验证问答,被邀请时为空
 	// responseFlag 请求回馈密钥
-	cqp.AddLog(0, "GroupRequest", fmt.Sprintln(subType, sendTime, fromGroup, fromQQ, msg, responseFlag))
+	cqp.AddLog(20, "GroupRequest",
+		fmt.Sprintln(
+			"\n请求类型:", subType,
+			"\n申请时间:", sendTime,
+			"\n来自群:", fromGroup,
+			"\n来着QQ:", fromQQ,
+			"\n请求内容:", msg,
+			"\n请求反馈密钥:", responseFlag,
+			"\n白名单列表:", AuthorizedGroupList))
 	if subType == 2 {
 		for i, authorizedgroup := range AuthorizedGroupList {
 			if authorizedgroup == fromGroup {
 				cqp.SetGroupAddRequest(responseFlag, subType, 1, "")
 				AuthorizedGroupList[i] = 0
-				// cqp.AddLog(0, "GroupRequest", "执行同意语句")
+				cqp.AddLog(0, "GroupRequest", "同意邀请")
 				return 0
 			}
 		}
 		cqp.SetGroupAddRequest(responseFlag, subType, 2, "未授权的请求")
-		// cqp.AddLog(0, "GroupRequest", "执行拒绝语句")
+		cqp.AddLog(0, "GroupRequest", "拒绝邀请")
 	}
 	return 0
 }
@@ -317,9 +325,11 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 		}
 		switch msg[0] {
 		case "randSeto", "随机色图":
-			sendMsg(fromGroup, fromQQ, "功能已写好但由于不可抗因素无法工作")
-			// sendMsg(fromGroup, fromQQ, "[CQ:image,file=2.jpg]")
-			// randSeto(msg, msgID, fromGroup, fromQQ, 0)
+
+			// sendMsg(fromGroup, fromQQ, "功能已写好但由于不可抗因素无法工作")
+			randSeto(msg, msgID, fromGroup, fromQQ, 0)
+			// sendMsg(fromGroup, fromQQ, "[CQ:image,file=00B42DD8A147B5CE5D88B88723B61797(1181×1181).jpg]")
+
 		case "water", "群活跃数据":
 			water(fromGroup)
 		case "allNotBanned", "解禁":
@@ -338,8 +348,10 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 					dailyRemindAlterFGO(fromGroup)
 				case "改变火星时报订阅状态":
 					saraNewsAlter(fromGroup)
+				/* 废弃功能
 				case "改变标枪快讯订阅状态":
 					javelinNewsAlter(fromGroup)
+				*/
 				case "改变罗德岛线报订阅状态":
 					arknightsAlter(fromGroup)
 				case "改变FGO订阅状态":
