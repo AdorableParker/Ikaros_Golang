@@ -1,6 +1,6 @@
 @echo off
 
-:: SET DevDir=D:\CoolQ Pro\dev\me.cqp.tnze.demo
+SET DevDir=D:\Program Files (x86)\MiraiOk-M4\data\MiraiNative\plugins
 
 echo Setting proxy
 SET GOPROXY=https://goproxy.cn
@@ -50,7 +50,7 @@ IF ERRORLEVEL 1 (pause) ELSE (echo Build success!)
 
 if defined DevDir (
     echo Copy app.dll and app.json ...
-    for %%f in (app.dll,app.json) do move %%f "%DevDir%\%%f" > nul
+    for %%f in (app.dev.dll) do move %%f "%DevDir%\%%f" > nul
     IF ERRORLEVEL 1 pause
 )
 
