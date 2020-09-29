@@ -46,7 +46,7 @@ func updateCheckTask() {
 				cqp.SendGroupMsg(checkGroup.GroupID, msg)
 			}
 		}
-
+/* 废弃功能
 		// 标枪快讯
 		msg, ok = updateCheckt(300123440)
 		if ok {
@@ -56,7 +56,7 @@ func updateCheckTask() {
 				cqp.SendGroupMsg(checkGroup.GroupID, msg)
 			}
 		}
-
+*/
 		// B站明日方舟
 		msg, ok = updateCheckt(161775300)
 		if ok {

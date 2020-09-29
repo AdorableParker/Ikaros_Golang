@@ -58,7 +58,7 @@ var DocConsole = &HelpDoc{
 	Name: "控制台",
 	KeyWord: []string{
 		"\n改变复读姬状态\n", "改变主动对话许可状态\n", "设定新入群禁言时间\n",
-		"改变火星时报订阅状态\n", "改变标枪快讯订阅状态\n", "改变罗德岛线报订阅状态\n",
+		"改变火星时报订阅状态\n", "(已废弃)改变标枪快讯订阅状态\n", "改变罗德岛线报订阅状态\n",
 		"改变FGO订阅状态\n", "改变报时鸟模式\n", "改变随机色图模式\n",
 		"改变迎新功能状态\n", "改变每日提醒_舰B版功能状态\n", "改变每日提醒_FGO版功能状态\n"},
 	Example:     "改变复读姬状态\n改变报时鸟模式 1\n设定新入群禁言时间 5",
@@ -144,6 +144,8 @@ func saraNewsAlter(group int64) {
 	cqp.SendGroupMsg(group, fmt.Sprintf("碧蓝航线　B站动态订阅原状态为 %t\n现状态已改为 %t", real[g.SaraNews], real[1^g.SaraNews]))
 }
 
+/* 废弃功能
+
 func javelinNewsAlter(group int64) {
 	var g groupInfo
 	// 链接数据库
@@ -159,6 +161,7 @@ func javelinNewsAlter(group int64) {
 	db.Table("group_info").Where("group_id = ?", group).Update("Javelin_news", 1^g.JavelinNews)
 	cqp.SendGroupMsg(group, fmt.Sprintf("火星bot小黄瓜　B站动态订阅原状态为 %t\n现状态已改为 %t", real[g.JavelinNews], real[1^g.JavelinNews]))
 }
+*/
 
 // callBellAlter(group int64, msg []string)
 // group 群号码
