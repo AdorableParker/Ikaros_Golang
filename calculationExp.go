@@ -58,8 +58,6 @@ func calculateParts(lowLv, highLv int, flag bool) int {
 		} else {
 			totalExp *= 13
 		}
-	} else {
-		totalExp *= 10
 	}
 
 	return totalExp + calculateParts(lowLv, highLv, flag)
@@ -168,6 +166,9 @@ func calculationExp(msg []string, msgID int32, group, qq int64, try uint8) {
 	}
 
 	balance := calculateParts(lowLv, highLv, shipType)
+	if !shipType {
+		balance *= 10
+	}
 	balance -= existingExp
 	if balance < 0 {
 		sendMsg(group, qq, fmt.Sprintf("当前等级:%d,目标等级:%d\n是否为决战方案:%t\n已有经验:%d\n最终计算结果: 达成目标等级后将溢出 %d EXP", lowLv, highLv, shipType, existingExp, -balance)) // 发送提示消息
