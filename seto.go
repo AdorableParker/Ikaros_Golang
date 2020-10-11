@@ -104,13 +104,23 @@ func randSeto(msg []string, msgID int32, group, qq int64, try uint8) {
 		return
 	}
 	var imgName string
+	var ok bool
 	switch seto.Mod {
 	case 1:
 		sendMsg(group, qq, "当前为安全模式")
-		imgName = filepath.Join(Appdir, "seto", "Safe", sendSeto(seto.Mod))
+		imgName, ok = sendSeto(seto.Mod)
+		if !ok {
+			sendMsg(group, qq, imgName)
+			return
+		}
+		imgName = filepath.Join(Appdir, "seto", "Safe", imgName)
 	case 2:
 		sendMsg(group, qq, "当前为审核模式,请发送审核结果,是否露点?(仅接受 1/0、t/f)")
-		imgName = sendSeto(seto.Mod)
+		imgName, ok = sendSeto(seto.Mod)
+		if !ok {
+			sendMsg(group, qq, imgName)
+			return
+		}
 		stagedSessionPool[msgID] = newStagedSession(group, qq, randSeto, []string{imgName}, 1) // 添加新的会话到会话池
 		imgName = filepath.Join(Appdir, "seto", "Unsafe", imgName)
 	}
@@ -126,16 +136,20 @@ func randSeto(msg []string, msgID int32, group, qq int64, try uint8) {
 		20+seto.Score/10-seto.Fine*5)) // 实际份额
 }
 
-func sendSeto(mod uint8) string {
+func sendSeto(mod uint8) (string, bool) {
 	setoMod := [...]string{"Safe", "Unsafe"}
 	// 取文件列表
 	files, err := ioutil.ReadDir(filepath.Join(Appdir, "seto", setoMod[mod-1]))
 	if err != nil {
 		cqp.AddLog(30, "文件列表读取错误", fmt.Sprintln(err))
-		return ""
+		return "文件列表读取错误,请联系管理员检查文件目录", false
+	}
+	if len(files) <= 0 {
+		cqp.AddLog(30, "文件列表为空列表", fmt.Sprintln(err))
+		return "文件列表为空列表,请联系管理员检查文件目录", false
 	}
 	rand.Seed(time.Now().UnixNano())
-	return files[rand.Intn(len(files))].Name()
+	return files[rand.Intn(len(files))].Name(), true
 }
 
 func markImg(name string, value bool) {
