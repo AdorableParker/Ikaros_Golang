@@ -15,11 +15,11 @@ import (
 )
 
 type setoMod struct {
-	Mod   uint8 `gorm:"column:SetoMod"`
-	Quota int   `gorm:"column:quota"`
-	Score int   `gorm:"column:score"`
-	Date  int64 `gorm:"column:date"`
-	Fine  int   `gorm:"column:fine"`
+	Mod   uint8 `gorm:"column:SetoMod"` // 模式
+	Quota int   `gorm:"column:quota"`   // 剩余份额
+	Score int   `gorm:"column:score"`   // 审核积分
+	Date  int64 `gorm:"column:date"`    // 最后更新时间
+	Fine  int   `gorm:"column:fine"`    // 惩罚
 }
 
 var loger *log.Logger
@@ -118,7 +118,12 @@ func randSeto(msg []string, msgID int32, group, qq int64, try uint8) {
 	sendMsg(group, qq, fmt.Sprintf("[CQ:image,file=%s]", imgName))
 	// sendMsg(group, qq, `[CQ:image,file=00B42DD8A147B5CE5D88B88723B61797(1181×1181).jpg]`)
 	db.Table("rendSeto").Where("groupID = ?", group).Update("quota", seto.Quota-1)
-	sendMsg(group, qq, fmt.Sprintf("本群今日剩余份额为 %d\n下次刷新份额为 %d", seto.Quota-1, 20+seto.Score/10))
+	sendMsg(group, qq, fmt.Sprintf(
+		"本群今日剩余份额为 %d\n下次刷新份额为 %d\n扣除错误审核处罚份额 %d ,实得份额 %d",
+		seto.Quota-1,                  // 剩余份额
+		20+seto.Score/10,              // 刷新份额
+		seto.Fine*5,                   // 处罚份额
+		20+seto.Score/10-seto.Fine*5)) // 实际份额
 }
 
 func sendSeto(mod uint8) string {

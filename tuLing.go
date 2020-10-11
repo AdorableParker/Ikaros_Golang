@@ -134,6 +134,7 @@ func training(msgs []string, msgID int32, group, qq int64, try uint8) {
 		if try <= 3 { // 如果已尝试次数不超过3次
 			if try == 1 {
 				sendMsg(group, qq, "请输入问答哦,格式为:问题#回答\n例如:还记得我们的约定吗#我会永远记得的")
+				sendMsg(group, qq, "注意：问答将录入至通用数据库,所有群组都能触发该问答,所以请不要教学带有针对特定对象、特定语境的问答")
 			} else {
 				sendMsg(group, qq, "伊卡洛斯没有看懂,再发一次吧\n(。・ω・。)") // 发送提示消息
 			}
