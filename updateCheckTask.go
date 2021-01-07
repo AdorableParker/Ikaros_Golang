@@ -76,6 +76,17 @@ func updateCheckTask() {
 				cqp.SendGroupMsg(checkGroup.GroupID, msg)
 			}
 		}
+
+		// B站原神
+		msg, ok = updateCheckt(401742377)
+		if ok {
+			// 查询数据库
+			db.Table("group_info").Select("group_id").Where("Genshin = ?", "1.0").Find(&checkList)
+			for _, checkGroup := range checkList {
+				cqp.SendGroupMsg(checkGroup.GroupID, msg)
+			}
+		}
+
 		db.Close()
 		calibrationCountdown++      // 计数增加
 		time.Sleep(6 * time.Minute) // 六分钟后继续

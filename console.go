@@ -25,6 +25,7 @@ type groupInfo struct {
 	SaraNews       uint8 `gorm:"column:Sara_news"`
 	JavelinNews    uint8 `gorm:"column:Javelin_news"`
 	FateGrandOrder uint8 `gorm:"column:FateGrandOrder"`
+	Genshin        uint8 `gorm:"column:Genshin"`
 
 	// 报时
 	CallBell uint8 `gorm:"column:Call_bell"`
@@ -59,7 +60,7 @@ var DocConsole = &HelpDoc{
 	KeyWord: []string{
 		"\n改变复读姬状态\n", "改变主动对话许可状态\n", "设定新入群禁言时间\n",
 		"改变火星时报订阅状态\n", "(已废弃)改变标枪快讯订阅状态\n", "改变罗德岛线报订阅状态\n",
-		"改变FGO订阅状态\n", "改变报时鸟模式\n", "改变随机色图模式\n",
+		"改变FGO订阅状态\n", "改变原神订阅状态\n", "改变报时鸟模式\n", "改变随机色图模式\n",
 		"改变迎新功能状态\n", "改变每日提醒_舰B版功能状态\n", "改变每日提醒_FGO版功能状态\n"},
 	Example:     "改变复读姬状态\n改变报时鸟模式 1\n设定新入群禁言时间 5",
 	Description: "需群管理员以上权限才能触发\n报时模式目前共四种:\n0\t关闭\n1\t标准\n2\t舰C\n3\t明日方舟"}
@@ -142,6 +143,22 @@ func saraNewsAlter(group int64) {
 	db.Table("group_info").Where("group_id = ?", group).First(&g)
 	db.Table("group_info").Where("group_id = ?", group).Update("Sara_news", 1^g.SaraNews)
 	cqp.SendGroupMsg(group, fmt.Sprintf("碧蓝航线　B站动态订阅原状态为 %t\n现状态已改为 %t", real[g.SaraNews], real[1^g.SaraNews]))
+}
+
+func genshinAlter(group int64) {
+	var g groupInfo
+	// 链接数据库
+	db, err := gorm.Open("sqlite3", Datadir)
+	defer db.Close()
+	if err != nil {
+		cqp.AddLog(30, "数据库错误", fmt.Sprintf("错误信息:%v", err))
+		cqp.SendGroupMsg(group, "数据库连接异常\n×_×")
+		return
+	}
+	// 查询数据库
+	db.Table("group_info").Where("group_id = ?", group).First(&g)
+	db.Table("group_info").Where("group_id = ?", group).Update("Genshin", 1^g.SaraNews)
+	cqp.SendGroupMsg(group, fmt.Sprintf("原神　B站动态订阅原状态为 %t\n现状态已改为 %t", real[g.SaraNews], real[1^g.SaraNews]))
 }
 
 /* 废弃功能

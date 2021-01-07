@@ -27,17 +27,18 @@ type favorScore struct {
 	Banned bool `gorm:"column:banned"`
 }
 
-var response = [...]string{"伊卡洛斯记住了你的话，因为你的认真教导，好感度上升了",
-	"伊卡洛斯记住了你的话，你教学的时候太严厉了，好感度下降了",
+var response = [...]string{"我记住了你的话，因为你的认真教导，好感度上升了",
+	"我记住了你的话，你教学的时候太严厉了，好感度下降了",
 	"这样的吗，我大概记住了\nฅ( ̳• ◡ • ̳)ฅ",
-	"伊卡洛斯喜欢学习\nヾ(◍°∇°◍)ﾉﾞ",
-	"虽然不太懂，但是伊卡洛斯还是把你教的知识记在了心里"}
+	"我喜欢学习\nヾ(◍°∇°◍)ﾉﾞ",
+	"虽然不太懂，但是我还是把你教的知识记在了心里"}
 
 // DocTuling 图灵对话功能文档
 var DocTuling = &HelpDoc{
 	Name:    "图灵AI",
-	KeyWord: []string{"伊卡洛斯"},
-	Example: "伊卡洛斯 你好啊"}
+	// KeyWord: []string{"我"},
+	// Example: "我 你好啊"}
+}
 
 func tuling(msg string, group, qq int64, flag bool) {
 	var ai []aiQA
@@ -121,7 +122,7 @@ var DocTraining = &HelpDoc{
 	Name:        "图灵教学",
 	KeyWord:     []string{"教学", "训练", "调教"},
 	Example:     "训练 生命、宇宙以及万物的答案是什么#42",
-	Description: "伊卡洛斯会完全信任你教给她的所有知识，她把你教给她的所有知识视作珍宝并会很认真的将其牢牢记住..所以请不要让她学坏哦！"}
+	Description: "我会完全信任你教给她的所有知识，她把你教给她的所有知识视作珍宝并会很认真的将其牢牢记住..所以请不要让她学坏哦！"}
 
 func training(msgs []string, msgID int32, group, qq int64, try uint8) {
 	if !DBConn {
@@ -136,7 +137,7 @@ func training(msgs []string, msgID int32, group, qq int64, try uint8) {
 				sendMsg(group, qq, "请输入问答哦,格式为:问题#回答\n例如:还记得我们的约定吗#我会永远记得的")
 				sendMsg(group, qq, "注意：问答将录入至通用数据库,所有群组都能触发该问答,所以请不要教学带有针对特定对象、特定语境的问答")
 			} else {
-				sendMsg(group, qq, "伊卡洛斯没有看懂,再发一次吧\n(。・ω・。)") // 发送提示消息
+				sendMsg(group, qq, "我没有看懂,再发一次吧\n(。・ω・。)") // 发送提示消息
 			}
 			stagedSessionPool[msgID] = newStagedSession(group, qq, training, msgs, try) // 添加新的会话到会话池
 		} else {
@@ -151,7 +152,7 @@ func training(msgs []string, msgID int32, group, qq int64, try uint8) {
 			if try == 1 {
 				sendMsg(group, qq, "请输入问答哦,格式为:问题#回答\n例如:还记得我们的约定吗#我会永远记得的")
 			} else {
-				sendMsg(group, qq, "伊卡洛斯没有看懂,检查一下格式,再发一次吧\n格式为:问题#回答\n例如：还记得我们的约定吗#我会永远记得的") // 发送提示消息
+				sendMsg(group, qq, "我没有看懂,检查一下格式,再发一次吧\n格式为:问题#回答\n例如：还记得我们的约定吗#我会永远记得的") // 发送提示消息
 			}
 			stagedSessionPool[msgID] = newStagedSession(group, qq, training, msgs, try) // 添加新的会话到会话池
 		} else {
