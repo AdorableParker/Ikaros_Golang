@@ -96,7 +96,7 @@ func activity(msg []string, msgID int32, group, qq int64, try uint8) {
 
 		// 更改保存
 		cfg.Section("ongoing_activities").Key("form").SetValue("false")
-		cfg.SaveTo(Appdir + "config.ini")
+		cfg.SaveTo(Appdir + "activityConfig.ini")
 		return
 	}
 	remainingTime := t.Sub(time.Now().Truncate(time.Second)).String()

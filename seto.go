@@ -31,7 +31,7 @@ var DocRandSeto = &HelpDoc{
 	Description: "本功能分为“安全模式”和“审核模式”\n\n处于安全模式时,发出的图一定不是露点图\n处于审核模式时,有概率出现露点图\n\n本功能可由群管理或以上权限者设定,相关控制命令详见“help 控制台”\n\n以群为单位，每天拥有20张图片份额,份额刷新时间为每日凌晨3点\n\n另外:本着`人人为我,我为人人`的集体主义精神,审核模式要求用户对于发出的图片进行正确的审核,审核内容主要为对于是否露点做出正确判断并反馈\n作为感谢对于净化社区环境所做出贡献的奖励\n做出正确判断可以获取更多每日份额(每10次反馈予以1张每日份额奖励)\n但若发现恶意错误反馈获取份额的行为\n将会被处永久降低每日份额的惩罚(降低量5张起步,下至永久关闭该群该功能)\n惩罚不予申诉"}
 
 func init() {
-	file := filepath.Join(Appdir, "logs", fmt.Sprintf("Icarus-%s.log", time.Now().Format("2006-1-2")))
+	file := filepath.Join(Appdir, "logs", fmt.Sprintf("IcarusSeto.log"))
 	logFile, err := os.OpenFile(file, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0766)
 	if err != nil {
 		panic(err)
