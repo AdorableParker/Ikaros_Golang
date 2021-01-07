@@ -301,7 +301,10 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 	case "月球人公告", "FGO公告", "呆毛王":
 		sendDynamic(msg[1:], fromGroup, fromQQ, 233108841)
 
-	case "伊卡洛斯项目地址":
+	case "原神公告":
+		sendDynamic(msg[1:], fromGroup, fromQQ, 401742377)
+
+	case "项目地址":
 		sendMsg(fromGroup, fromQQ, "项目地址: https://adorableparker.github.io/Ikaros_Golang/\n欢迎前来送star、造轮子、提issues")
 
 	case "help", "使用说明", "使用帮助", "帮助", "使用方法":
@@ -312,13 +315,16 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 
 	case "srengthRanking", "强度榜单", "强度榜", "舰娘强度榜", "舰娘排行榜":
 		srengthRanking(fromGroup, fromQQ)
+		
+	case "srengthRankingExc'", "强度副榜", "舰娘强度副榜", "舰娘排行副榜":
+		srengthRankingEXC(fromGroup, fromQQ)
 
 	case "pixivRanking", "社保榜", "射爆榜", "P站榜", "p站榜":
 		pixivRanking(fromGroup, fromQQ)
 
-	case "伊卡洛斯":
-		words := strings.Join(msg[1:], " ") // 拼接字符串
-		tuling(words, fromGroup, fromQQ, true)
+	// case "伊卡洛斯":
+	// 	words := strings.Join(msg[1:], " ") // 拼接字符串
+	// 	tuling(words, fromGroup, fromQQ, true)
 	default: // 只有群消息有效
 		if fromGroup == -1 {
 			return false
@@ -356,6 +362,8 @@ func functionList(msg []string, msgID int32, fromGroup, fromQQ int64) bool {
 					arknightsAlter(fromGroup)
 				case "改变FGO订阅状态":
 					fgoAlter(fromGroup)
+				case "改变原神订阅状态":
+					genshinAlter(fromGroup)
 				case "改变主动对话许可状态":
 					fireAlter(fromGroup)
 				case "改变复读姬状态":

@@ -16,7 +16,7 @@ var DocEquipmentRanking = &HelpDoc{
 }
 
 func equipmentRanking(group, qq int64) {
-	imgURL := getWikiImg("装备一图榜")
+	imgURL := getWikiImg("装备一图榜", 0)
 	if imgURL != "" {
 		sendPhoto(group, qq, imgURL)
 	} else {
@@ -26,13 +26,24 @@ func equipmentRanking(group, qq int64) {
 
 // DocSrengthRanking 碧蓝航线Wiki强度榜查询功能文档
 var DocSrengthRanking = &HelpDoc{
-	Name:        "碧蓝航线Wiki PVE用舰船综合性能强度榜查询",
-	KeyWord:     []string{"强度榜单", "强度榜", "舰娘强度榜", "舰娘排行榜"},
+	Name: "碧蓝航线Wiki PVE用舰船综合性能强度榜查询",
+	KeyWord: []string{
+		"强度榜单", "强度榜", "舰娘强度榜", "舰娘排行榜",
+		"强度副榜", "舰娘强度副榜", "舰娘排行副榜"},
 	Description: "爬取碧蓝航线Wiki PVE用舰船综合性能强度榜",
 }
 
 func srengthRanking(group, qq int64) {
-	imgURL := getWikiImg("PVE用舰船综合性能强度榜")
+	imgURL := getWikiImg("PVE用舰船综合性能强度榜", 1)
+	if imgURL != "" {
+		sendPhoto(group, qq, imgURL)
+	} else {
+		sendMsg(group, qq, "访问Wiki失败惹\nε(┬┬﹏┬┬)3")
+	}
+}
+
+func srengthRankingEXC(group, qq int64) {
+	imgURL := getWikiImg("PVE用舰船综合性能强度榜", 2)
 	if imgURL != "" {
 		sendPhoto(group, qq, imgURL)
 	} else {
@@ -48,7 +59,7 @@ var DocPixivRanking = &HelpDoc{
 }
 
 func pixivRanking(group, qq int64) {
-	imgURL := getWikiImg("P站搜索结果一览榜（社保榜）")
+	imgURL := getWikiImg("P站搜索结果一览榜（社保榜）", 0)
 	if imgURL != "" {
 		sendPhoto(group, qq, imgURL)
 	} else {
@@ -56,7 +67,7 @@ func pixivRanking(group, qq int64) {
 	}
 }
 
-func getWikiImg(index string) string {
+func getWikiImg(index string, exception int) string {
 
 	// 请求html页面
 	res, err := http.Get(fmt.Sprintf("https://wiki.biligame.com/blhx/%s", index))
@@ -77,7 +88,19 @@ func getWikiImg(index string) string {
 	}
 	// 查找图片
 	soup := doc.Find("#mw-content-text")
+	if index == "PVE用舰船综合性能强度榜" {
+		s := soup.Find("img").Map(findImg)
+		return s[exception]
+	}
 	s, ok := soup.Find("img").Attr("src")
+	if !ok {
+		cqp.AddLog(30, "搜索错误", "未能找到目标")
+		return ""
+	}
+	return s
+}
+func findImg(i int, j *goquery.Selection) string {
+	s, ok := j.Attr("src")
 	if !ok {
 		cqp.AddLog(30, "搜索错误", "未能找到目标")
 		return ""

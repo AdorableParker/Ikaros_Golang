@@ -1,7 +1,8 @@
 @echo off
 
-:: 更改为自己的目标目录，执行时会自动复制过去 或者注释掉此句以关闭自动复制功能
-SET DevDir=D:\Program Files (x86)\MiraiOk-M4\data\MiraiNative\plugins 
+REM 更改为自己的目标目录,执行时会自动复制过去,或者注释掉此句以关闭自动复制功能 
+
+SET DevDir=D:\Program Files (x86)\MiraiProject\MiraiOk-M4\data\MiraiNative\plugins
 
 echo Setting proxy
 SET GOPROXY=https://goproxy.cn
@@ -51,7 +52,7 @@ IF ERRORLEVEL 1 (pause) ELSE (echo Build success!)
 
 if defined DevDir (
     echo Copy app.dll and app.json ...
-    for %%f in (app.dev.dll) do copy %%f "%DevDir%\%%f" > nul
+    for %%f in (app.dev.dll) do COPY %%f "%DevDir%\%%f" > nul
     IF ERRORLEVEL 1 pause
 )
 
