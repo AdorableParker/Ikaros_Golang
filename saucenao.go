@@ -86,6 +86,16 @@ func saucenao(msg []string, msgID int32, group, qq int64, try uint8) {
 			sendMsg(group, qq, "API超出200次/日,请改日重试 ≧ ﹏ ≦")
 			return
 		}
+		if strings.Contains(err.Error(), "An existing connection was forcibly closed by the remote host.") {
+			cqp.AddLog(20, "搜图异常", "连接被远程主机强制关闭")
+			sendMsg(group, qq, "An existing connection was forcibly closed by the remote host. ≧ ﹏ ≦")
+			return
+		}
+		if strings.Contains(err.Error(), "A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.") {
+			cqp.AddLog(20, "搜图异常", "服务器正常未响应")
+			sendMsg(group, qq, "A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond. ≧ ﹏ ≦")
+			return
+		}
 		cqp.AddLog(20, "搜图异常", fmt.Sprintln(err))
 		sendMsg(group, qq, "搜图引擎运行异常,请稍后重试 ≧ ﹏ ≦")
 		return
