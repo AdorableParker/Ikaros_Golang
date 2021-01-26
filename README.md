@@ -5,16 +5,12 @@
 [![GitHub latest tag](https://badgen.net/github/tag/AdorableParker/Ikaros_Golang)](https://github.com/AdorableParker/Ikaros_Golang/tags)
 ![GitHub last commit](https://badgen.net/github/last-commit/AdorableParker/Ikaros_Golang)
 
-# 自用QQ机器人伊卡洛斯的Golang版本  
+# 自用QQ机器人伊卡洛斯的Golang版本（CoolQ平台）  
 因为Python太慢，所以从Python版本迁移过来  
-这个语言版本不知道我能坚持维护多久，说起来Python前前后后也更新了2年...  
-~~另外，因为gojieba库的编译报错问题，也不知道是我做错了什么，或许哪天实在忍不了了会转C++~~(转C++的计划流产,现在考虑的是要不要转~~Java~~Kotlin以获得Mirai的原生支持)
+因为`CoolQ`的完蛋，现迁移到Kotlin语言版本以获得`Mirai`的原生支持
 
-# ~~无限期暂停~~抽风式维护 #  
-
-# ~~**酷Q服务器停运了,所以该项目维护无限期暂停**~~  
-~~**什么时候有替代平台了，什么时候再考虑继续项目了**~~  
-**试图转Mirai的时候遇见了一大堆的坑，艰难的等待推进** #  
+# 不再维护 #
+本项目迁移到`Mirai`,使用Kotlin重构
 
 ## 如何使用 ##
 **$ 以下说明仅仅适用于 *Cool Q* 平台**
@@ -115,6 +111,7 @@
 * 随机色图
   
     > 懂得都懂
+将在`Mirai`平台版本实现下面两个功能
 * 众裁禁言(待推进)
 * 塔罗占卜(待推进)
 
