@@ -177,7 +177,7 @@ func getDynamic(id, pages int, flag bool) (int64, string, []string) {
 		summary, _ := jsonparser.GetString(card, "summary")   // 摘要
 		imgSrc, _ := jsonparser.GetString(card, "banner_url") // 封面图片
 		return timestamp, fmt.Sprintf("专栏标题:%s\n专栏摘要：\n%s…", title, summary), []string{imgSrc}
-	case 2048:
+	case 2048: // 卡片
 		title, _ := jsonparser.GetString(card, "sketch", "title")          // 标题
 		context, _ := jsonparser.GetString(card, "vest", "content")        // 内容
 		targetURL, _ := jsonparser.GetString(card, "sketch", "target_url") // 相关链接

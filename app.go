@@ -105,7 +105,7 @@ func onGroupRequest(subType, sendTime int32, fromGroup, fromQQ int64, msg, respo
 			"\n请求类型:", subType,
 			"\n申请时间:", sendTime,
 			"\n来自群:", fromGroup,
-			"\n来着QQ:", fromQQ,
+			"\n来自QQ:", fromQQ,
 			"\n请求内容:", msg,
 			"\n请求反馈密钥:", responseFlag,
 			"\n白名单列表:", AuthorizedGroupList))

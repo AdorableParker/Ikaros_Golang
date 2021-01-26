@@ -119,7 +119,7 @@ func nameToMap(index string) []string {
 			}
 
 		}
-
+		
 	}
 	return report
 }
